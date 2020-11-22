@@ -1,10 +1,13 @@
+import os
 import numpy as np
 from gym import utils
 from gym.envs.mujoco import mujoco_env
 
+
 class CustomAntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(self):
-        mujoco_env.MujocoEnv.__init__(self, '/home/drojas/custom_gym/custom_ant/models/custom_ant_v2.xml', 5)
+        # mujoco_env.MujocoEnv.__init__(self, os.getcwd() + '/custom_ant/models/custom_ant_v2.xml', 5)
+        mujoco_env.MujocoEnv.__init__(self, os.getcwd() + '/custom_ant/models/custom_ant.xml', 5)
         utils.EzPickle.__init__(self)
 
     def step(self, a):
