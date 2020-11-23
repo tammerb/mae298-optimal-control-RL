@@ -1,5 +1,5 @@
 <mujoco model="ant">
-  <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
+  <compiler angle="degree" coordinate="global"/>
   <option integrator="RK4" timestep="0.01"/>
   <custom>
     <numeric data="0.0 0.0 0.55 1.0 0.0 0.0 0.0 0.0 1.0 0.0 -1.0 0.0 -1.0 0.0 1.0" name="init_qpos"/>
@@ -20,55 +20,58 @@
     <geom conaffinity="1" condim="3" material="MatPlane" name="floor" pos="0 0 0" rgba="0.8 0.9 0.8 1" size="40 40 40" type="plane"/>
     <body name="torso" pos="0 0 0.75">
       <camera name="track" mode="trackcom" pos="0 -3 0.3" xyaxes="1 0 0 0 0 1"/>
-      <geom name="torso_geom" pos="0 0 0" size="0.25" type="sphere"/>
+      <geom name="torso_geom" pos="0 0 0.75" size="0.25" type="sphere"/>
       <joint armature="0" damping="0" limited="false" margin="0.01" name="root" pos="0 0 0" type="free"/>
-      <body name="front_leg" pos="0 0 0">
-        <geom fromto="0.0 0.0 0.0 0.25 0.0 0.0" name="aux_1_geom" size="0.08" type="capsule"/>
-        <body name="aux_1" pos="0.25 0 0">
-          <joint axis="0 0 1" name="hip_1" pos="0.0 0.0 0.0" range="-30 30" type="hinge"/>
-          <geom fromto="0.0 0.0 0.0 0.25 0.0 0.0" name="left_leg_geom" size="0.08" type="capsule"/>
-          <body pos="0.25 0.0 0">
-            <joint axis="-1 1 0" name="ankle_1" pos="0.0 0.0 0.0" range="30 70" type="hinge"/>
-            <geom fromto="0.0 0.0 0.0 0.4 0.4 0.0" name="left_ankle_geom" size="0.08" type="capsule"/>
-                <body name="block" pos="0.4 0.4 0">
-                    <joint axis="-1 1 0" name="hand" pos="0.4 0.4 0.0" range= "30 70" type="hinge"/>
-                    <geom type="box" size=".4 .4 .4"/>
+        <body name="leg1">
+            <geom fromto="0.25 0 0.75 0.55 0 0.5" size="0.08" type="capsule"/>
+            <joint axis="0 0 1" name="hip1" type="hinge" range="-30 30" pos="0.25 0 0.75"/>
+            <body>
+                <joint axis="0 -1 0" name="ankle1" type="hinge" range="-70 -30" pos="0.55 0 0.5"/>
+                <geom fromto="0.55 0.0 0.5 1.05 0.0 0.5" size="0.08" type="capsule"/>
+                
+                <body>
+                    <joint type="hinge" pos="1.05 0 0.5" range="-90 90" axis="0 1 0"/>
+                    <joint type="hinge" pos="1.05 0 0.5" range="-90 90" axis="1 0 0"/>
+                    <joint type="hinge" pos="1.05 0 0.5" range="-90 90" axis="0 0 1"/>
+                    <geom type="box" size="0.5 0.5 0.5" pos="1.63 0 0.5"/>
                 </body>
-          </body>
+            </body>
         </body>
-      </body>
-      <body name="back_leg" pos="0 0 0">
-        <geom fromto="0.0 0.0 0.0 -0.125 -0.2165 0.0" name="aux_3_geom" size="0.08" type="capsule"/>
-        <body name="aux_3" pos="-0.125 -0.2165 0">
-          <joint axis="0 0 1" name="hip_3" pos="0.0 0.0 0.0" range="-30 30" type="hinge"/>
-          <geom fromto="0.0 0.0 0.0 -0.125 -0.2165 0.0" name="back_leg_geom" size="0.08" type="capsule"/>
-          <body pos="-0.125 -0.2165 0">
-            <joint axis="-1 1 0" name="ankle_3" pos="0.0 0.0 0.0" range="-70 -30" type="hinge"/>
-            <geom fromto="0.0 0.0 0.0 -0.4 -0.4 0.0" name="third_ankle_geom" size="0.08" type="capsule"/>
-          </body>
+        <body name="leg2">
+            <joint axis="0 0 1" name="hip2" type="hinge" range="-30 30" pos="-0.125 0.2165 0.75"/>
+            <geom fromto="-0.125 0.2165 0.75 -0.275 0.4763 0.75" size="0.08" type="capsule"/>
+            <body>
+                <joint axis="0.866025404 0.5 0" name="ankle2" type="hinge" range="-70 -30" pos="-0.275 0.4763 0.75"/>
+                <geom fromto="-0.275 0.4763 0.75 -0.525 0.90933 0.75" size="0.08" type="capsule"/>
+                <body pos="-0.565 0.9786 0.75">
+                    <site name="foot2" pos="-0.565 0.9786 0.75"/>
+                </body>
+            </body>
         </body>
-      </body>
-      <body name="right_back_leg" pos="0 0 0">
-        <geom fromto="0.0 0.0 0.0 -0.125 0.2165 0.0" name="aux_4_geom" size="0.08" type="capsule"/>
-        <body name="aux_4" pos="-0.125 0.2165 0">
-          <joint axis="0 0 1" name="hip_4" pos="0.0 0.0 0.0" range="-30 30" type="hinge"/>
-          <geom fromto="0.0 0.0 0.0 -0.125 0.2165 0.0" name="rightback_leg_geom" size="0.08" type="capsule"/>
-          <body pos="-0.125 0.2165 0">
-            <joint axis="1 1 0" name="ankle_4" pos="0.0 0.0 0.0" range="30 70" type="hinge"/>
-            <geom fromto="0.0 0.0 0.0 0.4 -0.4 0.0" name="fourth_ankle_geom" size="0.08" type="capsule"/>
-          </body>
-        </body>
-      </body>
+        <body name="leg3">
+            <joint axis="0 0 1" name="hip3" type="hinge" range="-30 30" pos="-0.125 -0.2165 0.75"/>
+            <geom fromto="-0.125 -0.2165 0.75 -0.275 -0.4763 0.75" size="0.08" type="capsule"/>
+            <body>
+                <joint axis="-0.866025404 0.5 0" name="ankle3" type="hinge" range="-70 -30" pos="-0.275 -0.4763 0.75"/>
+                <geom fromto="-0.275 -0.4763 0.75 -0.525 -0.90933 0.75" size="0.08" type="capsule"/>
+                <body pos="-0.565 -0.9786 0.75">                
+                    <site name="foot3" pos="-0.565 -0.9786 0.75"/>
+                </body>
+            </body>
+        </body>     
     </body>
   </worldbody>
+  <sensor>
+    <force site="foot2" name="foot2Sensor" noise="0" cutoff="100000"/>
+    <!--<force site="foot3" name="foot3Sensor" noise="0" cutoff="100000"/>-->
+  </sensor>
   <actuator>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip_4" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle_4" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip_1" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle_1" gear="150"/>
-    <!--<motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip_2" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle_2" gear="150"/>-->
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip_3" gear="150"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle_3" gear="150"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip1" gear="150"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle1" gear="150"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip2" gear="150"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle2" gear="150"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip3" gear="150"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle3" gear="150"/>
   </actuator>
 </mujoco>
+
