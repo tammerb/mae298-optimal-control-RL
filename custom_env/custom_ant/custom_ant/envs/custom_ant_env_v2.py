@@ -2,10 +2,11 @@ import numpy as np
 import os
 from gym import utils
 from gym.envs.mujoco import mujoco_env
+import mujoco_py as mjp
 
 
 DEFAULT_CAMERA_CONFIG = {
-    'distance': 4.0,
+    'distance': 6.0,
 }
 
 
@@ -83,6 +84,8 @@ class CustomAntEnvV2(mujoco_env.MujocoEnv, utils.EzPickle):
 
         xy_velocity = (xy_position_after - xy_position_before) / self.dt
         x_velocity, y_velocity = xy_velocity
+        
+        mjp.functions.mj_rnePostConstraint(self.sim.model, self.data) #### calc contacts        
 
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
@@ -92,6 +95,12 @@ class CustomAntEnvV2(mujoco_env.MujocoEnv, utils.EzPickle):
 
         rewards = forward_reward + healthy_reward
         costs = ctrl_cost + contact_cost
+        
+        # testing constact force 
+        contact_forces_test = self.data.get_sensor('torsoSensor') 
+        #contact_forces_test = self.data.sensordata 
+        print(contact_forces_test)
+        print(' ')
 
         reward = rewards - costs
         done = self.done

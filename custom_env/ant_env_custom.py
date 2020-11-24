@@ -8,7 +8,7 @@ env = gym.make('CustomAnt-v0')
 #Sets an initial state
 env.reset()
 # Rendering our instance 300 times
-for _ in range(300):
+for _ in range(500):
   #renders the environment
   env.render()
   #Takes a random action from its action space 

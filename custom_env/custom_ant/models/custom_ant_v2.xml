@@ -6,7 +6,7 @@
   </custom>
   <default>
     <joint armature="1" damping="1" limited="true"/>
-    <geom conaffinity="0" condim="3" density="5.0" friction="1 0.5 0.5" margin="0.01" rgba="0.8 0.6 0.4 1"/>
+    <geom conaffinity="0" condim="3" density="5.0" friction="1 0.5 0.5" margin="0.01" rgba="0.5 0.6 0.4 1"/>
   </default>
   <asset>
     <texture builtin="gradient" height="100" rgb1="1 1 1" rgb2="0 0 0" type="skybox" width="100"/>
@@ -21,6 +21,7 @@
     <body name="torso" pos="0 0 0.75">
       <camera name="track" mode="trackcom" pos="0 -3 0.3" xyaxes="1 0 0 0 0 1"/>
       <geom name="torso_geom" pos="0 0 0.75" size="0.25" type="sphere"/>
+      <site name="torso" pos="0 0 0.75" size=".03 .03 .03" type="ellipsoid" rgba="1 0 0 1"/>
       <joint armature="0" damping="0" limited="false" margin="0.01" name="root" pos="0 0 0" type="free"/>
         <body name="leg1">
             <geom fromto="0.25 0 0.75 0.55 0 0.5" size="0.08" type="capsule"/>
@@ -40,11 +41,13 @@
         <body name="leg2">
             <joint axis="0 0 1" name="hip2" type="hinge" range="-30 30" pos="-0.125 0.2165 0.75"/>
             <geom fromto="-0.125 0.2165 0.75 -0.275 0.4763 0.75" size="0.08" type="capsule"/>
+            <inertial pos="-0.2 0.348 0.75" mass="3" diaginertia="1 1 1"/>
             <body>
                 <joint axis="0.866025404 0.5 0" name="ankle2" type="hinge" range="-70 -30" pos="-0.275 0.4763 0.75"/>
                 <geom fromto="-0.275 0.4763 0.75 -0.525 0.90933 0.75" size="0.08" type="capsule"/>
+                <inertial pos="-0.4 0.696 0.75" mass="2" diaginertia="1 1 1"/>
                 <body pos="-0.565 0.9786 0.75">
-                    <site name="foot2" pos="-0.565 0.9786 0.75"/>
+                    <site name="foot2" pos="-0.565 0.9786 0.75" size=".03 .03 .03" type="ellipsoid" rgba="1 0 0 1"/>
                 </body>
             </body>
         </body>
@@ -62,7 +65,9 @@
     </body>
   </worldbody>
   <sensor>
-    <force site="foot2" name="foot2Sensor" noise="0" cutoff="100000"/>
+    <touch name="foot2Sensor" site="foot2" />
+    <touch name="torsoSensor" site="torso" />
+    <!-- <force site="foot2" name="foot2Sensor" noise="1.0" cutoff="100000"/> -->
     <!--<force site="foot3" name="foot3Sensor" noise="0" cutoff="100000"/>-->
   </sensor>
   <actuator>
