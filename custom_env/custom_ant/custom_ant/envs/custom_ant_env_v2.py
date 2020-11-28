@@ -78,31 +78,40 @@ class CustomAntEnvV2(mujoco_env.MujocoEnv, utils.EzPickle):
         return done
 
     def step(self, action):
+        
         xy_position_before = self.get_body_com("torso")[:2].copy()
+        block_position_before = self.get_body_com("block")[0].copy()
         self.do_simulation(action, self.frame_skip)
+        block_position_after = self.get_body_com("block")[0].copy()
         xy_position_after = self.get_body_com("torso")[:2].copy()
 
         xy_velocity = (xy_position_after - xy_position_before) / self.dt
         x_velocity, y_velocity = xy_velocity
+        
+        
+        
         
         mjp.functions.mj_rnePostConstraint(self.sim.model, self.data) #### calc contacts        
 
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
 
-        forward_reward = x_velocity
+        forward_reward = block_position_after - block_position_before 
         healthy_reward = self.healthy_reward
 
+        #print(forward_reward)
         rewards = forward_reward + healthy_reward
+        #print(rewards)
         costs = ctrl_cost + contact_cost
         
         # testing constact force 
         contact_forces_test = self.data.get_sensor('torsoSensor') 
         #contact_forces_test = self.data.sensordata 
-        print(contact_forces_test)
-        print(' ')
+        #print(contact_forces_test)
+        #print(' ')
 
         reward = rewards - costs
+        #reward = rewards
         done = self.done
         observation = self._get_obs()
         info = {
