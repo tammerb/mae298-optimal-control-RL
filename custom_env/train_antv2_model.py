@@ -1,3 +1,11 @@
+########################################
+# This script creates a CustomAnt env object,
+# and a baselines model object (PPO, A2C, etc)
+# Evaluates (rolls out) the untrained model (random actions),
+# then train the model and reevaulates it (rollout again).
+# It saves both model rollouts with model.save.
+########################################
+
 import gym
 import custom_ant
 import numpy as np
@@ -9,8 +17,6 @@ from stable_baselines import A2C
 
 import os
 
-
-
 env = gym.make('CustomAnt-v2')
 # Optional: PPO2 requires a vectorized environment to run
 # the env is now wrapped automatically when passing it to the constructor
@@ -21,23 +27,23 @@ model = PPO2(MlpPolicy, env, verbose=1)
 
 cumulative_reward_before = 0
 
-obs = env.reset()
-for i in range(1000):
-    action, _states = model.predict(obs)
-    obs, rewards, dones, info = env.step(action)
-    cumulative_reward_before += rewards
+#obs = env.reset()
+#for i in range(1000):
+#    action, _states = model.predict(obs)
+#    obs, rewards, dones, info = env.step(action)
+#    cumulative_reward_before += rewards
 
 model.save(os.getcwd() + "/ant_model_untrained")
 
-model.learn(total_timesteps=100000)
+model.learn(total_timesteps=1000000)
 
 cumulative_reward_after = 0
 
-obs = env.reset()
-for i in range(1000):
-    action, _states = model.predict(obs)
-    obs, rewards, dones, info = env.step(action)
-    cumulative_reward_after += rewards
+#obs = env.reset()
+#for i in range(1000):
+#    action, _states = model.predict(obs)
+#    obs, rewards, dones, info = env.step(action)
+#    cumulative_reward_after += rewards
 
 model.save(os.getcwd() + "/ant_model")
 

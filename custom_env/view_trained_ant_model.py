@@ -1,3 +1,8 @@
+########################################
+# This script loads the models saved in train_ant_model
+# and prints the reward functions and renders the two rollouts back to back.
+########################################
+
 import os
 import gym
 import custom_ant
