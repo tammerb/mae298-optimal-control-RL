@@ -14,7 +14,7 @@ model_untrained = PPO2.load(os.getcwd() + "/ant_model_untrained", verbose=1)
 model = PPO2.load(os.getcwd() + "/ant_model", verbose=1)
 
 
-env = gym.make('CustomAnt-v2')
+env = gym.make('CustomAnt-v0')
 
 model_untrained.set_env(DummyVecEnv([lambda: env]))
 model.set_env(DummyVecEnv([lambda: env]))

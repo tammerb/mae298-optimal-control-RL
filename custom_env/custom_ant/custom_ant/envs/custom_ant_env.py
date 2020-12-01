@@ -23,23 +23,23 @@ class CustomAntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         # located the sections in the matrix cooresponding to the feet
         # the 6 colums are = force x,y,z + torque x,y,z
         
-        print(" ")
-        print("foot 1  ")
-        cf_f1 = cf[4,:]
-        print(cf_f1)
-        
-        print("foot 2  ")
-        cf_f2 = cf[7,:]
-        print(cf_f2) 
-          
-        print("foot 3  ")
-        cf_f3 = cf[10,:]
-        print(cf_f3) 
-         
-        print("foot 4  ")
-        cf_f4 = cf[13,:]
-        print(cf_f4)
-        ####### 
+        # print(" ")
+        # print("foot 1  ")
+        # cf_f1 = cf[4,:]
+        # print(cf_f1)
+        # 
+        # print("foot 2  ")
+        # cf_f2 = cf[7,:]
+        # print(cf_f2) 
+        #   
+        # print("foot 3  ")
+        # cf_f3 = cf[10,:]
+        # print(cf_f3) 
+        #  
+        # print("foot 4  ")
+        # cf_f4 = cf[13,:]
+        # print(cf_f4)
+        # ####### 
          
         xposafter = self.get_body_com("torso")[0]
         forward_reward = (xposafter - xposbefore)/self.dt
