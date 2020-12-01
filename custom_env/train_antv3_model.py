@@ -35,7 +35,7 @@ for i in range(1000):
 
 model.save(os.getcwd() + "/ant_model_untrained")
 
-model.learn(total_timesteps=100000)
+model.learn(total_timesteps=200000)
 
 cumulative_reward_after = 0
 

@@ -10,9 +10,9 @@ DEFAULT_CAMERA_CONFIG = {
 }
 
 
-class CustomAntEnvV3(mujoco_env.MujocoEnv, utils.EzPickle):
+class CustomAntEnvV0(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(self,
-                 xml_file= os.getcwd() + '/custom_ant/models/custom_ant_v3.xml',
+                 xml_file= os.getcwd() + '/custom_ant/models/original_ant.xml',
                  ctrl_cost_weight=0.5,
                  contact_cost_weight=5e-4,
                  healthy_reward=1.0,
@@ -80,17 +80,14 @@ class CustomAntEnvV3(mujoco_env.MujocoEnv, utils.EzPickle):
     def step(self, action):
         
         xy_position_before = self.get_body_com("torso")[:2].copy()
-        block_position_before = self.get_body_com("block")[:2].copy()
+
         self.do_simulation(action, self.frame_skip)
-        block_position_after = self.get_body_com("block")[:2].copy()
+
         xy_position_after = self.get_body_com("torso")[:2].copy()
 
         xy_velocity = (xy_position_after - xy_position_before) / self.dt
         x_velocity, y_velocity = xy_velocity
-        
-        block_xy_velocity = (block_position_after - block_position_before) / self.dt
-        block_x_velocity, block_y_velocity = block_xy_velocity
-        
+     
         
         
         mjp.functions.mj_rnePostConstraint(self.sim.model, self.data) #### calc contacts        
@@ -98,9 +95,7 @@ class CustomAntEnvV3(mujoco_env.MujocoEnv, utils.EzPickle):
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
 
-        # forward_reward = block_position_after - block_position_before
-        # forward_reward = (block_position_after - block_position_before) + (xy_position_after[0] - xy_position_before[0])
-        forward_reward = block_x_velocity + x_velocity
+        forward_reward = x_velocity
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)
@@ -112,7 +107,7 @@ class CustomAntEnvV3(mujoco_env.MujocoEnv, utils.EzPickle):
         costs = ctrl_cost + contact_cost
         
         # testing constact force 
-        contact_forces_test = self.data.get_sensor('torsoSensor') 
+        # contact_forces_test = self.data.get_sensor('torsoSensor') 
         #contact_forces_test = self.data.sensordata 
         #print(contact_forces_test)
         #print(' ')
