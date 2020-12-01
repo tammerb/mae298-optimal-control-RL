@@ -95,7 +95,7 @@ class CustomAntEnvV0(mujoco_env.MujocoEnv, utils.EzPickle):
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
 
-        forward_reward = x_velocity
+        forward_reward = x_velocity - np.absolute(y_velocity) + 0.001*xy_position_after[0]
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)
