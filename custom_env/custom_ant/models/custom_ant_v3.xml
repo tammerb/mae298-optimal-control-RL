@@ -33,7 +33,7 @@
                 <joint axis="1 0 0" name="ankle1" type="slide" range="0 0.3" pos="0.25 0 0.5"/>
                 <geom fromto="0.25 0.0 0.5 0.75 0.0 0.5" size="0.08" type="capsule"/>             
                 <body name="block">
-                    <inertial pos="1.25 0 0.5" mass="5" diaginertia="1 1 1"/>
+                    <inertial pos="1.25 0 0.5" mass="2" diaginertia="1 1 1"/>
                     <joint type="hinge" pos="0.75 0 0.5" range="-90 90" axis="0 1 0"/>
                     <!--<joint type="hinge" pos="1.05 0 0.5" range="-90 90" axis="1 0 0"/>-->
                     <joint type="hinge" pos="0.75 0 0.5" range="-90 90" axis="0 0 1"/>
