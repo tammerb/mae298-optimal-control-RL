@@ -22,8 +22,8 @@ env = gym.make('CustomAnt-v0')
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
 
-model = PPO2(MlpPolicy, env, verbose=1)
-#model = A2C(MlpPolicy, env, verbose=1, gamma=0.9, n_steps=20)
+#model = PPO2(MlpPolicy, env, verbose=1)
+model = A2C(MlpPolicy, env, verbose=1, gamma=0.9, n_steps=20)
 
 cumulative_reward_before = 0
 
@@ -35,7 +35,7 @@ for i in range(1000):
 
 model.save(os.getcwd() + "/ant_model_untrained")
 
-model.learn(total_timesteps=300000)
+model.learn(total_timesteps=10000000)
 
 cumulative_reward_after = 0
 
