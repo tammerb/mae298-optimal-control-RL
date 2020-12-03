@@ -6,9 +6,6 @@ on a OpenAI Gym environment.
 
 This is a simplified version of what can be found in https://github.com/DLR-RM/rl-baselines3-zoo.
 
-You can run this example as follows:
-    $ python sb3_simple.py
-
 """
 from typing import Any
 from typing import Dict
@@ -24,7 +21,7 @@ from optuna.pruners import MedianPruner
 from optuna.samplers import TPESampler
 
 
-N_TRIALS = 100
+N_TRIALS = 1000  ### originally 100
 N_JOBS = 2
 N_STARTUP_TRIALS = 5
 N_EVALUATIONS = 2
@@ -85,7 +82,7 @@ class TrialEvalCallback(EvalCallback):
         self,
         eval_env: gym.Env,
         trial: optuna.Trial,
-        n_eval_episodes: int = 5,
+        n_eval_episodes: int = 50,  ### originally 5
         eval_freq: int = 10000,
         deterministic: bool = True,
         verbose: int = 0,
