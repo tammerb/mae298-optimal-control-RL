@@ -21,11 +21,11 @@ from optuna.pruners import MedianPruner
 from optuna.samplers import TPESampler
 
 
-N_TRIALS = 1000  ### originally 100
+N_TRIALS = 500  ### originally 100
 N_JOBS = 2
 N_STARTUP_TRIALS = 5
 N_EVALUATIONS = 2
-N_TIMESTEPS = int(2e4)
+N_TIMESTEPS = int(2e5) ### originally 2e4
 EVAL_FREQ = int(N_TIMESTEPS / N_EVALUATIONS)
 N_EVAL_EPISODES = 3
 
@@ -82,7 +82,7 @@ class TrialEvalCallback(EvalCallback):
         self,
         eval_env: gym.Env,
         trial: optuna.Trial,
-        n_eval_episodes: int = 50,  ### originally 5
+        n_eval_episodes: int = 5,
         eval_freq: int = 10000,
         deterministic: bool = True,
         verbose: int = 0,
@@ -156,7 +156,10 @@ if __name__ == "__main__":
     # Do not prune before 1/3 of the max budget is used
     pruner = MedianPruner(n_startup_trials=N_STARTUP_TRIALS, n_warmup_steps=N_EVALUATIONS // 3)
 
-    study = optuna.create_study(sampler=sampler, pruner=pruner, direction="maximize")
+    # Parallelize for distributed optimization
+    study = optuna.create_study(sampler=sampler, pruner=pruner, direction="maximize", study_name='ant-study',
+    storage='sqlite:///ant.db',
+    load_if_exists=True)
     try:
         study.optimize(objective, n_trials=N_TRIALS, n_jobs=N_JOBS, timeout=600)
     except KeyboardInterrupt:
