@@ -1,0 +1,17 @@
+Number of finished trials:  22
+Best trial:
+  Value:  1009.5153198242188
+  Params: 
+    gamma: 0.002834006681033087
+    max_grad_norm: 3.9487891908996047
+    gae_lambda: 0.16722111219532584
+    exponent_n_steps: 5
+    lr: 7.900609916587035e-05
+    ent_coef: 4.4869137925081485e-08
+    ortho_init: False
+    net_arch: tiny
+    activation_fn: relu
+  User attrs:
+    gamma_: 0.9971659933189669
+    gae_lambda_: 0.8327788878046741
+    n_steps: 32
