@@ -14,13 +14,13 @@ def train_model(optuna):
     print("Optuna = True")
     file = "/saved_models/optuna_Ant"
     model = A2C('MlpPolicy', env, 
-          gamma = 0.9768643682645313,
-          n_steps = 64,
+          gamma = 0.9998395217363757,
+          n_steps = 16,
           vf_coef = 0.5,
-          ent_coef = 3.964131731063129e-06,
-          max_grad_norm = 2.0054957616950406,
-          learning_rate = 3.762321257388784e-05,
-          gae_lambda = 0.925420172167672,       
+          ent_coef = 1.1169937708254059e-05,
+          max_grad_norm = 0.9345694121324499,
+          learning_rate = 8.208284881543706e-06,
+          gae_lambda = 0.9963456366387801,       
           rms_prop_eps = 1e-5,
           verbose=1
           )
@@ -48,7 +48,7 @@ def train_model(optuna):
 # Evaluate the trained agent
 def eval(model):
   print("Evaluating the model")
-  return evaluate_policy(model, env, n_eval_episodes=100)
+  return evaluate_policy(model, env, n_eval_episodes=1000)
 
 def print_rewards(mean_reward, std_reward):
   print(f"mean_reward={mean_reward:.2f} +/- {std_reward}")

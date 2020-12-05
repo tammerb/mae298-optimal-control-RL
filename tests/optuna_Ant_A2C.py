@@ -21,13 +21,13 @@ from optuna.pruners import MedianPruner
 from optuna.samplers import TPESampler
 
 
-N_TRIALS = 500  ### originally 100
-N_JOBS = 2
-N_STARTUP_TRIALS = 5
-N_EVALUATIONS = 2
-N_TIMESTEPS = int(2e5) ### originally 2e4
+N_TRIALS = 2000  ### originally 100
+N_JOBS = 1 ### Originally 2
+N_STARTUP_TRIALS = 100 ### Originally 5
+N_EVALUATIONS = 500 ### Originally 2
+N_TIMESTEPS = int(1e6) ### originally 2e4
 EVAL_FREQ = int(N_TIMESTEPS / N_EVALUATIONS)
-N_EVAL_EPISODES = 3
+N_EVAL_EPISODES = 30 ### Originally 3
 
 ENV_ID = "Ant-v2"
 
@@ -42,9 +42,9 @@ def sample_a2c_params(trial: optuna.Trial) -> Dict[str, Any]:
     gamma = 1.0 - trial.suggest_float("gamma", 0.0001, 0.1, log=True)
     max_grad_norm = trial.suggest_float("max_grad_norm", 0.3, 5.0, log=True)
     gae_lambda = 1.0 - trial.suggest_float("gae_lambda", 0.001, 0.2, log=True)
-    n_steps = 2 ** trial.suggest_int("exponent_n_steps", 3, 10)
-    learning_rate = trial.suggest_float("lr", 1e-5, 1, log=True)
-    ent_coef = trial.suggest_float("ent_coef", 0.00000001, 0.1, log=True)
+    n_steps = 2 ** trial.suggest_int("exponent_n_steps", 1, 10)
+    learning_rate = trial.suggest_float("lr", 1e-6, 1, log=True)
+    ent_coef = trial.suggest_float("ent_coef", 0.00000001, 0.5, log=True)
     ortho_init = trial.suggest_categorical("ortho_init", [False, True])
     net_arch = trial.suggest_categorical("net_arch", ["tiny", "small"])
     activation_fn = trial.suggest_categorical("activation_fn", ["tanh", "relu"])
@@ -85,7 +85,7 @@ class TrialEvalCallback(EvalCallback):
         n_eval_episodes: int = 5,
         eval_freq: int = 10000,
         deterministic: bool = True,
-        verbose: int = 0,
+        verbose: int = 1,
     ):
 
         super().__init__(
@@ -165,17 +165,28 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         pass
 
+    best_trial_file = open("ant_a2c_best.txt", "a")
     print("Number of finished trials: ", len(study.trials))
+    best_trial_file.write("Number of finished trials: " + str(len(study.trials)) + "\n")
 
     print("Best trial:")
     trial = study.best_trial
+    best_trial_file.write("Best trial:\n")
 
     print("  Value: ", trial.value)
+    best_trial_file.write("  Value: " + str(trial.value) + "\n")
 
     print("  Params: ")
+    best_trial_file.write("  Params: \n")
     for key, value in trial.params.items():
         print("    {}: {}".format(key, value))
+        best_trial_file.write(str(key) + ": " + str(value) + "\n")
 
     print("  User attrs:")
+    best_trial_file.write("  User attrs: \n")
     for key, value in trial.user_attrs.items():
         print("    {}: {}".format(key, value))
+        best_trial_file.write(str(key) + ": " + str(value) + "\n")
+
+    best_trial_file.write("\n\n")
+    best_trial_file.close()

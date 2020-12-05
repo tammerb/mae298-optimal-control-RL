@@ -165,17 +165,36 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         pass
 
+    best_trial_file = open("cartpole_a2c_best.txt", "a")
     print("Number of finished trials: ", len(study.trials))
+    best_trial_file.write("Number of finished trials: " + str(len(study.trials)) + "\n")
 
     print("Best trial:")
     trial = study.best_trial
+    best_trial_file.write("Best trial:\n")
 
     print("  Value: ", trial.value)
+    best_trial_file.write("  Value: " + str(trial.value) + "\n")
 
     print("  Params: ")
+    best_trial_file.write("  Params: \n")
     for key, value in trial.params.items():
         print("    {}: {}".format(key, value))
+        best_trial_file.write(str(key) + ": " + str(value) + "\n")
 
     print("  User attrs:")
     for key, value in trial.user_attrs.items():
         print("    {}: {}".format(key, value))
+        best_trial_file.write(str(key) + ": " + str(value) + "\n\n\n")
+
+    best_trial_file.close()
+
+    
+    
+    
+    
+    
+    
+    
+    best_trial_file.close()
+

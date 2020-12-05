@@ -21,10 +21,10 @@ from optuna.pruners import MedianPruner
 from optuna.samplers import TPESampler
 
 
-N_TRIALS = 100  ### originally 100
-N_JOBS = 2
-N_STARTUP_TRIALS = 5
-N_EVALUATIONS = 2
+N_TRIALS = 500  ### originally 100
+N_JOBS = 20 ### Originally 2
+N_STARTUP_TRIALS = 5 ### Originally 5
+N_EVALUATIONS = 2 ### Originally 2
 N_TIMESTEPS = int(2e4) ### originally 2e4
 EVAL_FREQ = int(N_TIMESTEPS / N_EVALUATIONS)
 N_EVAL_EPISODES = 3
