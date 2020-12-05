@@ -1,0 +1,21 @@
+Number of finished trials:  20
+Best trial:
+  Value:  1011.56689453125
+  Params: 
+    activation_fn: tanh
+    ent_coef: 0.0061272996559694854
+    exponent_batch_size: 4
+    exponent_n_steps: 10
+    gae_lambda: 0.027063483309990196
+    gamma: 0.005001927313840461
+    lr: 2.1291742657224173e-05
+    max_grad_norm: 1.8211879777058189
+    n_epochs: 8
+    net_arch: small
+    ortho_init: True
+    vf_coef: 0.005595785615019555
+  User attrs:
+    batch_size: 16
+    gae_lambda_: 0.9729365166900098
+    gamma_: 0.9949980726861596
+    n_steps: 1024

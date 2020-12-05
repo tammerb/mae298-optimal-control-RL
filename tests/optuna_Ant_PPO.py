@@ -1,7 +1,7 @@
 ### From https://github.com/optuna/optuna/blob/master/examples/rl/sb3_simple.py
 
 """ Optuna example that optimizes the hyperparameters of
-a reinforcement learning agent using A2C implementation from Stable-Baselines3
+a reinforcement learning agent using PPO implementation from Stable-Baselines3
 on a OpenAI Gym environment.
 
 This is a simplified version of what can be found in https://github.com/DLR-RM/rl-baselines3-zoo.
@@ -11,7 +11,7 @@ from typing import Any
 from typing import Dict
 
 import gym
-from stable_baselines3 import A2C
+from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import EvalCallback
 import torch
 import torch.nn as nn
@@ -21,11 +21,11 @@ from optuna.pruners import MedianPruner
 from optuna.samplers import TPESampler
 
 
-N_TRIALS = 500  ### originally 100
+N_TRIALS = 100  ### originally 100
 N_JOBS = 2
 N_STARTUP_TRIALS = 5
 N_EVALUATIONS = 2
-N_TIMESTEPS = int(2e5) ### originally 2e4
+N_TIMESTEPS = int(2e4) ### originally 2e4
 EVAL_FREQ = int(N_TIMESTEPS / N_EVALUATIONS)
 N_EVAL_EPISODES = 3
 
@@ -37,14 +37,17 @@ DEFAULT_HYPERPARAMS = {
 }
 
 
-def sample_a2c_params(trial: optuna.Trial) -> Dict[str, Any]:
-    """Sampler for A2C hyperparameters."""
+def sample_ppo_params(trial: optuna.Trial) -> Dict[str, Any]:
+    """Sampler for ppo hyperparameters."""
+    learning_rate = trial.suggest_float("lr", 1e-5, 1, log=True)
+    n_steps = 2 ** trial.suggest_int("exponent_n_steps", 3, 12)
+    batch_size = 2 ** trial.suggest_int("exponent_batch_size", 3, 10, log=True) ### Default = 64. New for PPO (not in A2C)
+    n_epochs = trial.suggest_int("n_epochs", 1, 50, log=True) ### Deafult = 10. New for PPO (not in A2C)
     gamma = 1.0 - trial.suggest_float("gamma", 0.0001, 0.1, log=True)
     max_grad_norm = trial.suggest_float("max_grad_norm", 0.3, 5.0, log=True)
     gae_lambda = 1.0 - trial.suggest_float("gae_lambda", 0.001, 0.2, log=True)
-    n_steps = 2 ** trial.suggest_int("exponent_n_steps", 3, 10)
-    learning_rate = trial.suggest_float("lr", 1e-5, 1, log=True)
     ent_coef = trial.suggest_float("ent_coef", 0.00000001, 0.1, log=True)
+    vf_coef = trial.suggest_float("vf_coef", 1e-5, 1.0, log=True) ### Deafult = 0.5. New for PPO (not in A2C)
     ortho_init = trial.suggest_categorical("ortho_init", [False, True])
     net_arch = trial.suggest_categorical("net_arch", ["tiny", "small"])
     activation_fn = trial.suggest_categorical("activation_fn", ["tanh", "relu"])
@@ -53,6 +56,7 @@ def sample_a2c_params(trial: optuna.Trial) -> Dict[str, Any]:
     trial.set_user_attr("gamma_", gamma)
     trial.set_user_attr("gae_lambda_", gae_lambda)
     trial.set_user_attr("n_steps", n_steps)
+    trial.set_user_attr("batch_size", batch_size)
 
     net_arch = [
         {"pi": [64], "vf": [64]} if net_arch == "tiny" else {"pi": [64, 64], "vf": [64, 64]}
@@ -62,10 +66,13 @@ def sample_a2c_params(trial: optuna.Trial) -> Dict[str, Any]:
 
     return {
         "n_steps": n_steps,
+        "batch_size": batch_size,
+        "n_epochs": n_epochs,
         "gamma": gamma,
         "gae_lambda": gae_lambda,
         "learning_rate": learning_rate,
         "ent_coef": ent_coef,
+        "vf_coef": vf_coef,
         "max_grad_norm": max_grad_norm,
         "policy_kwargs": {
             "net_arch": net_arch,
@@ -115,9 +122,9 @@ def objective(trial: optuna.Trial) -> float:
 
     kwargs = DEFAULT_HYPERPARAMS.copy()
     # Sample hyperparameters
-    kwargs.update(sample_a2c_params(trial))
+    kwargs.update(sample_ppo_params(trial))
     # Create the RL model
-    model = A2C(**kwargs)
+    model = PPO(**kwargs)
     # Create env used for evaluation
     eval_env = gym.make(ENV_ID)
     # Create the callback that will periodically evaluate
@@ -157,8 +164,8 @@ if __name__ == "__main__":
     pruner = MedianPruner(n_startup_trials=N_STARTUP_TRIALS, n_warmup_steps=N_EVALUATIONS // 3)
 
     # Parallelize for distributed optimization
-    study = optuna.create_study(sampler=sampler, pruner=pruner, direction="maximize", study_name='ant-A2C-study',
-    storage='sqlite:///ant_A2C.db',
+    study = optuna.create_study(sampler=sampler, pruner=pruner, direction="maximize", study_name='ant-ppo-study',
+    storage='sqlite:///ant_PPO.db',
     load_if_exists=True)
     try:
         study.optimize(objective, n_trials=N_TRIALS, n_jobs=N_JOBS, timeout=600)
