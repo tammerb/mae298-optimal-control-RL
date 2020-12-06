@@ -12,7 +12,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 class CustomAntEnvV4(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(self,
-                 xml_file=os.getcwd() + '/custom_ant/models/original_ant.xml',
+                 xml_file=os.getcwd() + '/Ant.xml',
                  ctrl_cost_weight=0.5,
                  contact_cost_weight=5e-4,
                  healthy_reward=1.0,
