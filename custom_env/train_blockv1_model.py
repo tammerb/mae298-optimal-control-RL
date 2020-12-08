@@ -1,9 +1,11 @@
 ########################################
-# This script loads the models saved in train_ant_model
-# and prints the reward functions and renders the two rollouts back to back.
+# This script creates a CustomAnt env object,
+# and a baselines model object (PPO, A2C, etc)
+# Evaluates (rolls out) the untrained model (random actions),
+# then train the model and reevaulates it (rollout again).
+# It saves both model rollouts with model.save.
 ########################################
 
-import os
 import gym
 env_dict = gym.envs.registration.registry.env_specs.copy()
 for env in env_dict:
@@ -22,40 +24,48 @@ for env in env_dict:
     elif 'Block-v0' in env:
         print("Remove {} from registry".format(env))
         del gym.envs.registration.registry.env_specs[env]
-    elif 'Block-v0' in env:
+    elif 'Block-v1' in env:
         print("Remove {} from registry".format(env))
         del gym.envs.registration.registry.env_specs[env]
 import custom_ant
+import numpy as np
 
+from stable_baselines.common.policies import MlpPolicy
+from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from stable_baselines import A2C
-from stable_baselines.common.vec_env import DummyVecEnv
 
-model_untrained = A2C.load(os.getcwd() + "/block_three_leg_model_untrained", verbose=1)
-model = A2C.load(os.getcwd() + "/block_three_leg_model_10M", verbose=1)
+import os
 
+env = gym.make('Block-v1')
+# Optional: PPO2 requires a vectorized environment to run
+# the env is now wrapped automatically when passing it to the constructor
+# env = DummyVecEnv([lambda: env])
 
-env = gym.make('Block-v0')
+#model = PPO2(MlpPolicy, env, verbose=1)
+model = A2C(MlpPolicy, env, verbose=1, gamma=0.97686, n_steps=64,lr_schedule='linear')
 
-model_untrained.set_env(DummyVecEnv([lambda: env]))
-model.set_env(DummyVecEnv([lambda: env]))
+cumulative_reward_before = 0
 
-
-cumulative_reward_untrained = 0
-obs = env.reset()
-for i in range(1000):
-    action, _states = model_untrained.predict(obs)
-    obs, rewards, dones, info = env.step(action)
-    cumulative_reward_untrained += rewards
-    env.render()
-
-cumulative_reward = 0
 obs = env.reset()
 for i in range(1000):
     action, _states = model.predict(obs)
     obs, rewards, dones, info = env.step(action)
-    cumulative_reward += rewards
-    env.render()
+    cumulative_reward_before += rewards
 
-print("Untrained total reward:", cumulative_reward_untrained)
-print("Trained Total reward:", cumulative_reward)
+model.save(os.getcwd() + "/block_three_leg_model_untrained")
+
+model.learn(total_timesteps=10000000,reset_num_timesteps=False)
+
+cumulative_reward_after = 0
+
+obs = env.reset()
+for i in range(1000):
+    action, _states = model.predict(obs)
+    obs, rewards, dones, info = env.step(action)
+    cumulative_reward_after += rewards
+
+model.save(os.getcwd() + "/block_three_leg_model_10M")
+
+print("Total reward before learning:", cumulative_reward_before)
+print("Total reward after learning:", cumulative_reward_after)

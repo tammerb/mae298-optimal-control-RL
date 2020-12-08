@@ -20,3 +20,7 @@ register(id='CustomAnt-v4', # id by which to refer to the new environment; the s
 register(id='Block-v0', # id by which to refer to the new environment; the string is passed as an argument to gym.make() to create a copy of the environment
 	entry_point='custom_ant.envs:BlockV0' # points to the class that inherits from gym.Env and defines the four basic functions, i.e. reset, step, render, close
 )
+
+register(id='Block-v1', # id by which to refer to the new environment; the string is passed as an argument to gym.make() to create a copy of the environment
+	entry_point='custom_ant.envs:BlockV1' # points to the class that inherits from gym.Env and defines the four basic functions, i.e. reset, step, render, close
+)
