@@ -52,7 +52,7 @@ for i in range(1000):
 
 model.save(os.getcwd() + "/block_go_to_location_untrained")
 
-model.learn(total_timesteps=10000000,reset_num_timesteps=False)
+model.learn(total_timesteps=500000,reset_num_timesteps=False)
 
 cumulative_reward_after = 0
 

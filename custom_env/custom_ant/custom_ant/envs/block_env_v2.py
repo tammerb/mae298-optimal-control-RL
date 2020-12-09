@@ -100,6 +100,7 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
         
+        
          # normalization 
         norm = np.linalg.norm(block_velocity)
         xy_velo_norm = block_velocity/norm
@@ -107,19 +108,31 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
         theta= np.arctan2(y_comp,x_comp)* 180 / np.pi
         
         # Desired goal
-        x_desired = 3
-        y_desired = 3
+        x_desired = 5
+        y_desired = 7
         theta_desired = np.arctan2(y_desired,x_desired)* 180 / np.pi
         
+        # Distance Calculations
+        x_before, y_before = block_position_before
+        x_after, y_after = block_position_after
+        
+        D_after = ((y_desired - y_after)**2 + (x_desired - x_after)**2)**0.5
+        D_before = ((y_desired - y_before)**2 + (x_desired - x_before)**2)**0.5
+        D_diff = D_before - D_after
+        D_compare = abs(D_after)
     
         #forward_reward = 5 * block_x_velocity# + 0.1 * xy_position_after[0]
+        #forward_reward = 1/abs(theta_desired - theta) 
         
-        forward_reward = 1/abs(theta_desired - theta) + 2 * block_velocity
-        Distance_reward = 1/((y_desired - y_comp)**2 + (x_desired - x_comp)**2)**0.5
+        
+        # 100*D_diff -> If D_after is greater than D_before, meaning it is getting further away from the goal, D_diff is negative ( negative reward )
+        #            -> Likewise, if the ant model is approaching the goal, reward is positive 
+        
+        Distance_reward = 100*D_diff + 1/(D_after)**2 
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)
-        rewards =  0.2*healthy_reward + Distance_reward
+        rewards =  healthy_reward + Distance_reward 
         # rewards = (100*forward_reward + healthy_reward)*0.01
 
 
@@ -134,10 +147,7 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
 
         reward = rewards - costs
         #reward = rewards
-        if xy_position_after[0] < -1:
-            done = True
-            reward -= 1000
-        elif block_position_after[0] >= 5:
+        if D_after <= 1:
             done = True
             reward += 2000
         elif self.num_timesteps > 5000:
