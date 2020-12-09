@@ -1,0 +1,19 @@
+Number of finished trials: 2
+Best trial:
+  Value: 865.625
+  Params: 
+activation_fn: relu
+ent_coef: 0.16535803309516242
+exponent_n_steps: 5
+gae_lambda: 0.0026756277673227595
+gamma: 0.006369246259770933
+lr: 0.00021258581917570237
+max_grad_norm: 0.3150403405673419
+net_arch: small
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.9973243722326772
+gamma_: 0.993630753740229
+n_steps: 32
+
+

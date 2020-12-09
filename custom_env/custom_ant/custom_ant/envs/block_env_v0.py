@@ -12,7 +12,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 class BlockV0(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(self,
-                 xml_file= os.getcwd() + '/custom_ant/models/block_two_legs_v0.xml',
+                 xml_file= os.getcwd() + '/custom_ant/models/original_ant.xml',
                  ctrl_cost_weight=0.5,
                  contact_cost_weight=5e-4,
                  healthy_reward=1.0,
@@ -82,23 +82,23 @@ class BlockV0(mujoco_env.MujocoEnv, utils.EzPickle):
     def step(self, action):
         
         xy_position_before = self.get_body_com("torso")[:2].copy()
-        block_position_before = self.get_body_com("block")[0].copy()
+
         self.do_simulation(action, self.frame_skip)
         self.num_timesteps += self.frame_skip
-        block_position_after = self.get_body_com("block")[0].copy()
+
         xy_position_after = self.get_body_com("torso")[:2].copy()
 
         xy_velocity = (xy_position_after - xy_position_before) / self.dt
         x_velocity, y_velocity = xy_velocity
-        block_velocity = (block_position_after-block_position_before)/self.dt
-        
+
+
         
         mjp.functions.mj_rnePostConstraint(self.sim.model, self.data) #### calc contacts        
 
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
 
-        forward_reward = 5 * block_velocity# + 0.1 * xy_position_after[0]
+        forward_reward = 5 * x_velocity
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)

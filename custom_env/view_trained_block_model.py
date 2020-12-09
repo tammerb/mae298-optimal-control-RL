@@ -35,7 +35,7 @@ model_untrained = A2C.load(os.getcwd() + "/block_three_leg_model_untrained", ver
 model = A2C.load(os.getcwd() + "/block_three_leg_model_10M", verbose=1)
 
 
-env = gym.make('Block-v0')
+env = gym.make('Block-v1')
 
 model_untrained.set_env(DummyVecEnv([lambda: env]))
 model.set_env(DummyVecEnv([lambda: env]))
