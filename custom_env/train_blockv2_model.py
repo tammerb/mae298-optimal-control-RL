@@ -50,7 +50,7 @@ for i in range(1000):
     obs, rewards, dones, info = env.step(action)
     cumulative_reward_before += rewards
 
-model.save(os.getcwd() + "/block_two_leg_model_untrained")
+model.save(os.getcwd() + "/block_go_to_location_untrained")
 
 model.learn(total_timesteps=10000000,reset_num_timesteps=False)
 
@@ -62,7 +62,7 @@ for i in range(1000):
     obs, rewards, dones, info = env.step(action)
     cumulative_reward_after += rewards
 
-model.save(os.getcwd() + "/block_two_leg_model_10M")
+model.save(os.getcwd() + "/block_go_to_location_trained")
 
 print("Total reward before learning:", cumulative_reward_before)
 print("Total reward after learning:", cumulative_reward_after)

@@ -99,12 +99,27 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
 
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
-
-        forward_reward = 5 * block_x_velocity# + 0.1 * xy_position_after[0]
+        
+         # normalization 
+        norm = np.linalg.norm(block_velocity)
+        xy_velo_norm = block_velocity/norm
+        x_comp,y_comp = xy_velo_norm
+        theta= np.arctan2(y_comp,x_comp)* 180 / np.pi
+        
+        # Desired goal
+        x_desired = 3
+        y_desired = 3
+        theta_desired = np.arctan2(y_desired,x_desired)* 180 / np.pi
+        
+    
+        #forward_reward = 5 * block_x_velocity# + 0.1 * xy_position_after[0]
+        
+        forward_reward = 1/abs(theta_desired - theta) + 2 * block_velocity
+        Distance_reward = 1/((y_desired - y_comp)**2 + (x_desired - x_comp)**2)**0.5
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)
-        rewards = forward_reward + healthy_reward
+        rewards =  0.2*healthy_reward + Distance_reward
         # rewards = (100*forward_reward + healthy_reward)*0.01
 
 
