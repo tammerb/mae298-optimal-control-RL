@@ -35,33 +35,44 @@
             </body>
         </body>
         <body name="leg2">
-            <inertial pos="-0.2 0.3464 0.5" mass="1" diaginertia="1 1 1"/>
-            <joint axis="0 0 1" name="hip2" type="hinge" range="-30 30" pos="-0.125 0.2165 0.5"/>
-            <geom fromto="-0.125 0.2165 0.5 -0.275 0.4763 0.5" size="0.08" type="capsule"/>
-            <!--<inertial pos="-0.2 0.348 0.5" mass="3" diaginertia="1 1 1"/>-->
+            <inertial pos="-0.4 0.0 0.5" mass="1" diaginertia="1 1 1"/>
+            <geom fromto="-0.25 0.0 0.5 -0.55 0.0 0.5" size="0.08" type="capsule"/>
+            <joint axis="0 0 1" name="hip2" type="hinge" range="-30 30" pos="-0.25 0.0 0.5"/>
             <body>
-                <inertial pos="-0.4 0.692815 0.5" mass="1" diaginertia="1 1 1"/>
-                <joint axis="0.866025404 0.5 0" name="ankle2" type="hinge" range="-70 -30" pos="-0.275 0.4763 0.5"/>
-                <geom fromto="-0.275 0.4763 0.5 -0.525 0.90933 0.5" size="0.08" type="capsule"/>
-                <!--<inertial pos="-0.4 0.696 0.5" mass="2" diaginertia="1 1 1"/>-->
-                <body pos="-0.565 0.9786 0.5">
-                    <site name="foot2" pos="-0.565 0.9786 0.5" size=".03 .03 .03" type="ellipsoid" rgba="1 0 0 1"/>
+                <inertial pos="-0.8 0.0 0.5" mass="1" diaginertia="1 1 1"/>
+                <joint axis="0 1 0" name="ankle2" type="hinge" range="-70 -30" pos="-0.55 0.0 0.5"/>
+                <geom fromto="-0.55 0.0 0.5 -1.05 0.0 0.5" size="0.08" type="capsule"/>
+                <body pos="-1.11 0.0 0.5">
+                    <site name="foot2" pos="-1.11 0.0 0.5" size=".03 .03 .03" type="ellipsoid" rgba="1 0 0 1"/>
                 </body>
             </body>
         </body>
         <body name="leg3">
-            <inertial pos="-0.2 -0.3464 0.5" mass="1" diaginertia="1 1 1"/>
-            <joint axis="0 0 1" name="hip3" type="hinge" range="-30 30" pos="-0.125 -0.2165 0.5"/>
-            <geom fromto="-0.125 -0.2165 0.5 -0.275 -0.4763 0.5" size="0.08" type="capsule"/>
+            <inertial pos="0.2 0.34641 0.5" mass="1" diaginertia="1 1 1"/>
+            <geom fromto="0.125 0.2165 0.5 0.275 0.4763 0.5" size="0.08" type="capsule"/>
+            <joint axis="0 0 1" name="hip3" type="hinge" range="-30 30" pos="0.125 0.2165 0.5"/>
             <body>
-                <inertial pos="-0.4 -0.692815 0.5" mass="1" diaginertia="1 1 1"/>
-                <joint axis="-0.866025404 0.5 0" name="ankle3" type="hinge" range="-70 -30" pos="-0.275 -0.4763 0.5"/>
-                <geom fromto="-0.275 -0.4763 0.5 -0.525 -0.90933 0.5" size="0.08" type="capsule"/>
-                <body pos="-0.565 -0.9786 0.5">                
-                    <site name="foot3" pos="-0.565 -0.9786 0.5"/>
+                <inertial pos="0.4 0.69282 0.5" mass="1" diaginertia="1 1 1"/>
+                <joint axis="0.860 -0.5 0" name="ankle3" type="hinge" range="-70 -30" pos="0.275 0.4763 0.5"/>
+                <geom fromto="0.275 0.4763 0.5 0.525 0.9093 0.5" size="0.08" type="capsule"/>
+                <body pos="0.555 0.961 0.5">
+                    <site name="foot3" pos="0.555 0.961 0.5" size=".03 .03 .03" type="ellipsoid" rgba="1 0 0 1"/>
                 </body>
             </body>
-        </body>     
+        </body>
+        <body name="leg4">
+            <inertial pos="0.2 -0.34641 0.5" mass="1" diaginertia="1 1 1"/>
+            <geom fromto="0.125 -0.2165 0.5 0.275 -0.4763 0.5" size="0.08" type="capsule"/>
+            <joint axis="0 0 1" name="hip4" type="hinge" range="-30 30" pos="0.125 -0.2165 0.5"/>
+            <body>
+                <inertial pos="0.4 -0.69282 0.5" mass="1" diaginertia="1 1 1"/>
+                <joint axis="-0.860 0.5 0" name="ankle4" type="hinge" range="-70 -30" pos="0.275 -0.4763 0.5"/>
+                <geom fromto="0.275 -0.4763 0.5 0.525 -0.9093 0.5" size="0.08" type="capsule"/>
+                <body pos="0.555 -0.961 0.5">
+                    <site name="foot4" pos="0.555 -0.961 0.5" size=".03 .03 .03" type="ellipsoid" rgba="1 0 0 1"/>
+                </body>
+            </body>
+        </body>  
     </body>
   </worldbody>
   <actuator>
@@ -70,6 +81,8 @@
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle2" gear="150"/>
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip3" gear="150"/>
     <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle3" gear="150"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="hip4" gear="150"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" joint="ankle4" gear="150"/>
   </actuator>
 </mujoco>
 
