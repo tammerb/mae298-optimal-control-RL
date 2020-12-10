@@ -7,71 +7,36 @@
 ########################################
 
 import gym
-env_dict = gym.envs.registration.registry.env_specs.copy()
-for env in env_dict:
-    if 'CustomAnt-v0' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'CustomAnt-v2' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'CustomAnt-v3' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'CustomAnt-v4' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'Block-v0' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'Block-v1' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'Block-v2' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'Block-v3' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-import custom_ant
-import numpy as np
-
-from stable_baselines.common.policies import MlpPolicy
-from stable_baselines.common.vec_env import DummyVecEnv
-from stable_baselines import PPO2
-from stable_baselines import A2C
-
 import os
+import numpy as np
+import matplotlib.pyplot as plt
 
+from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines3 import A2C
+from stable_baselines3.common.results_plotter import plot_results
+from stable_baselines3.common import results_plotter
+from stable_baselines3.common.evaluation import evaluate_policy
+from PlotCallBack import PlotCallBack
+from stable_baselines3.common.monitor import Monitor
+import custom_ant
+
+log_dir = "tmp_blockv3/"
+os.makedirs(log_dir, exist_ok=True)
+
+timesteps = 10000000
 env = gym.make('Block-v3')
-# Optional: PPO2 requires a vectorized environment to run
-# the env is now wrapped automatically when passing it to the constructor
-# env = DummyVecEnv([lambda: env])
+env = Monitor(env, log_dir)
+model = A2C('MlpPolicy', env, verbose=1, gamma=0.97686, n_steps=64)
 
-#model = PPO2(MlpPolicy, env, verbose=1)
-model = A2C(MlpPolicy, env, verbose=1, gamma=0.97686, n_steps=64,lr_schedule='linear')
-
-cumulative_reward_before = 0
-
-obs = env.reset()
-for i in range(1000):
-    action, _states = model.predict(obs)
-    obs, rewards, dones, info = env.step(action)
-    cumulative_reward_before += rewards
-
+mean_reward_before = 0#, _ = evaluate_policy(model, env,n_eval_episodes=1000)
 model.save(os.getcwd() + "/block_three_leg_lift_model_untrained")
 
-model.learn(total_timesteps=10000000,reset_num_timesteps=False)
-
-cumulative_reward_after = 0
-
-obs = env.reset()
-for i in range(1000):
-    action, _states = model.predict(obs)
-    obs, rewards, dones, info = env.step(action)
-    cumulative_reward_after += rewards
-
+callback = PlotCallBack(check_freq=1000, log_dir=log_dir)
+model.learn(total_timesteps=int(timesteps), callback=callback)
 model.save(os.getcwd() + "/block_three_leg_lift_model_10M")
+mean_reward_after, _ = evaluate_policy(model, env,n_eval_episodes=10)
 
-print("Total reward before learning:", cumulative_reward_before)
-print("Total reward after learning:", cumulative_reward_after)
+print("Mean reward before learning:", mean_reward_before)
+print("Mean reward after learning:", mean_reward_after)
+plot_results([log_dir], timesteps, results_plotter.X_TIMESTEPS, "Block-v3")
+plt.show()
