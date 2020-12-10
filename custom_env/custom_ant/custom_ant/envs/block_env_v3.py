@@ -10,9 +10,9 @@ DEFAULT_CAMERA_CONFIG = {
 }
 
 
-class BlockV0(mujoco_env.MujocoEnv, utils.EzPickle):
+class BlockV3(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(self,
-                 xml_file= os.getcwd() + '/custom_ant/models/block_two_legs_v0.xml',
+                 xml_file= os.getcwd() + '/custom_ant/models/block_three_legs_v1.xml',
                  ctrl_cost_weight=0.5,
                  contact_cost_weight=5e-4,
                  healthy_reward=1.0,
@@ -85,22 +85,24 @@ class BlockV0(mujoco_env.MujocoEnv, utils.EzPickle):
         block_position_before = self.get_body_com("block")[:2].copy()
         self.do_simulation(action, self.frame_skip)
         self.num_timesteps += self.frame_skip
-
-        xy_position_after = self.get_body_com("torso")[:2].copy()
         block_position_after = self.get_body_com("block")[:2].copy()
+        block_z = self.get_body_com("block")[2].copy()
+        xy_position_after = self.get_body_com("torso")[:2].copy()
+
         xy_velocity = (xy_position_after - xy_position_before) / self.dt
         x_velocity, y_velocity = xy_velocity
-        
         block_velocity = (block_position_after - block_position_before) / self.dt
         block_x_velocity, block_y_velocity = block_velocity
-
+        
         
         mjp.functions.mj_rnePostConstraint(self.sim.model, self.data) #### calc contacts        
 
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
-
-        forward_reward = 5 * block_x_velocity
+        if block_z > 0.5:
+            forward_reward = 5 * block_x_velocity # + 0.1 * xy_position_after[0]
+        else:
+            forward_reward = 0
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)
@@ -122,7 +124,7 @@ class BlockV0(mujoco_env.MujocoEnv, utils.EzPickle):
         if xy_position_after[0] < -1:
             done = True
             reward -= 1000
-        elif block_position_after[0] >= 5:
+        elif block_position_after[0] >= 5 & block_z > 0.5:
             done = True
             reward += 2000
         elif self.num_timesteps > 5000:
