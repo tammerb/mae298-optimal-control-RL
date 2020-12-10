@@ -121,18 +121,18 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
         D_diff = D_before - D_after
         D_compare = abs(D_after)
     
-        #forward_reward = 5 * block_x_velocity# + 0.1 * xy_position_after[0]
+        #forward_reward = 5 * block_x_velocity + 0.1 * xy_position_after[0]
         #forward_reward = 1/abs(theta_desired - theta) 
         
         
         # 100*D_diff -> If D_after is greater than D_before, meaning it is getting further away from the goal, D_diff is negative ( negative reward )
         #            -> Likewise, if the ant model is approaching the goal, reward is positive 
         
-        Distance_reward = 100*D_diff + 1/(D_after)**2 
+        forward_reward = 10*D_diff + 1/(D_after)**2 
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)
-        rewards =  healthy_reward + Distance_reward 
+        rewards =  healthy_reward + forward_reward 
         # rewards = (100*forward_reward + healthy_reward)*0.01
 
 
