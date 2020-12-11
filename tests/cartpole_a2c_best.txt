@@ -1,1 +1,0 @@
-Number of finished trials: 64Best trial:  Value: 500.0  Params: gamma: 0.0005278056528380579max_grad_norm: 1.0436603555091561gae_lambda: 0.023776274076555914exponent_n_steps: 5lr: 0.0036767980030783004ent_coef: 2.778952574467976e-05ortho_init: Truenet_arch: smallactivation_fn: tanhgamma_: 0.999472194347162gae_lambda_: 0.9762237259234441n_steps: 32

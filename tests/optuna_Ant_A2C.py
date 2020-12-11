@@ -157,15 +157,15 @@ if __name__ == "__main__":
     pruner = MedianPruner(n_startup_trials=N_STARTUP_TRIALS, n_warmup_steps=N_EVALUATIONS // 3)
 
     # Parallelize for distributed optimization
-    study = optuna.create_study(sampler=sampler, pruner=pruner, direction="maximize", study_name='ant-A2C-study',
-    storage='sqlite:///ant_A2C.db',
+    study = optuna.create_study(sampler=sampler, pruner=pruner, direction="maximize", study_name=ENV_ID + '_A2C-study',
+    storage='sqlite:///' + ENV_ID + '_A2C.db',
     load_if_exists=True)
     try:
         study.optimize(objective, n_trials=N_TRIALS, n_jobs=N_JOBS, timeout=600)
     except KeyboardInterrupt:
         pass
 
-    best_trial_file = open("ant_a2c_best.txt", "a")
+    best_trial_file = open(ENV_ID + "A2C_best_params.txt", "a")
     print("Number of finished trials: ", len(study.trials))
     best_trial_file.write("Number of finished trials: " + str(len(study.trials)) + "\n")
 
