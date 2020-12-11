@@ -1,7 +1,6 @@
 
 import gym
 import os
-import custom_ant
 from PlotCallBack import PlotCallBack
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,7 +18,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 
 
 TOTAL_TIMESTEPS = 5e5
-env_name='Block-v1'
+env_name='InvertedPendulum-v2'
 
 bag_dir = env_name + '_bag/'
 os.makedirs(bag_dir, exist_ok=True)
@@ -33,13 +32,13 @@ def train_model(optuna, env, bag_dir):
     model_dir = bag_dir + prefix
     env, callback = setup_callback(log_dir, env)
     model = A2C('MlpPolicy', env, 
-          gamma = 0.993630753740229,
+          gamma = 0.9926635896428226,
           n_steps = 32,
           vf_coef = 0.5,
-          ent_coef = 0.16535803309516242,
-          max_grad_norm = 0.9345694121324499,
-          learning_rate = 0.00021258581917570237,
-          gae_lambda = 0.9973243722326772,       
+          ent_coef = 1.9546965597732253e-08,
+          max_grad_norm = 1.7716329511301456,
+          learning_rate = 0.0010397208127972074,
+          gae_lambda = 0.9264481442403701,       
           rms_prop_eps = 1e-5,
           verbose=0
           )
