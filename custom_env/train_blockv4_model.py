@@ -20,11 +20,11 @@ from PlotCallBack import PlotCallBack
 from stable_baselines3.common.monitor import Monitor
 import custom_ant
 
-log_dir = "tmp_blockv3/"
+log_dir = "tmp_blockv4/"
 os.makedirs(log_dir, exist_ok=True)
 
-timesteps = 500000
-env = gym.make('Block-v3')
+timesteps = 300000
+env = gym.make('Block-v4')
 env = Monitor(env, log_dir)
 model = A2C('MlpPolicy', env, verbose=1, gamma=0.97686, n_steps=64)
 
@@ -33,10 +33,10 @@ model = A2C('MlpPolicy', env, verbose=1, gamma=0.97686, n_steps=64)
 
 callback = PlotCallBack(check_freq=1000, log_dir=log_dir)
 model.learn(total_timesteps=int(timesteps), callback=callback)
-model.save(os.getcwd() + "/block_three_leg_lift_model_10M")
+model.save(os.getcwd() + "/block_three_leg_lift_model_v4")
 mean_reward_after, _ = evaluate_policy(model, env,n_eval_episodes=10)
 
 #print("Mean reward before learning:", mean_reward_before)
 print("Mean reward after learning:", mean_reward_after)
-plot_results([log_dir], timesteps, results_plotter.X_TIMESTEPS, "Block-v3")
+plot_results([log_dir], timesteps, results_plotter.X_TIMESTEPS, "Block-v4")
 plt.show()
