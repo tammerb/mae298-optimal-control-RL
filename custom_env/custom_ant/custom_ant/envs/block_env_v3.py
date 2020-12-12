@@ -124,7 +124,7 @@ class BlockV3(mujoco_env.MujocoEnv, utils.EzPickle):
         if xy_position_after[0] < -1:
             done = True
             reward -= 1000
-        elif block_position_after[0] >= 5 & block_z > 0.5:
+        elif block_position_after[0] >= 5 and block_z > 0.5:
             done = True
             reward += 2000
         elif self.num_timesteps > 5000:
