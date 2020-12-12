@@ -29,7 +29,7 @@ results = []
 def train_model(optuna, env, bag_dir):
   
   if optuna:
-    print("Optuna = True")
+    print("Training with Optuna-optimized hyperparameters")
     prefix = "optuna/"
     log_dir = bag_dir + prefix
     model_dir = bag_dir + prefix
@@ -46,7 +46,7 @@ def train_model(optuna, env, bag_dir):
           verbose=0
           )
   else:
-    print("Optuna = False")
+    print("Training with stable-baselines3 default hyperparameters")
     prefix = "default/"
     log_dir = bag_dir + prefix
     model_dir = bag_dir + prefix

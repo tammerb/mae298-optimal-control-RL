@@ -1,0 +1,38 @@
+Number of finished trials: 2
+Best trial:
+  Value: 559.21337890625
+  Params: 
+activation_fn: tanh
+ent_coef: 0.001590090005765676
+exponent_n_steps: 5
+gae_lambda: 0.0010702476397359583
+gamma: 0.005759949410293001
+lr: 1.1526642718719798e-05
+max_grad_norm: 3.978484484914617
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.998929752360264
+gamma_: 0.994240050589707
+n_steps: 32
+
+
+Number of finished trials: 2
+Best trial:
+  Value: 559.21337890625
+  Params: 
+activation_fn: tanh
+ent_coef: 0.001590090005765676
+exponent_n_steps: 5
+gae_lambda: 0.0010702476397359583
+gamma: 0.005759949410293001
+lr: 1.1526642718719798e-05
+max_grad_norm: 3.978484484914617
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.998929752360264
+gamma_: 0.994240050589707
+n_steps: 32
+
+
