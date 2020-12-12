@@ -15,7 +15,7 @@ from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.callbacks import BaseCallback
 
 ## User Parameters ##
-ENV_ID='Block-v1'
+ENV_ID='Block-v2'
 TOTAL_TIMESTEPS = 5e5
 TRAIN_MODE='BOTH'   # Choose from OPTUNA, DEFAULT, or BOTH
 EVALUATE = True     # False will skip the evaluation step
@@ -35,12 +35,12 @@ def train_model(optuna, env, bag_dir):
     log_dir = bag_dir + prefix
     env, callback = setup_callback(log_dir, env)
     model = A2C('MlpPolicy', env, 
-          gamma = 0.994240050589707,
-          n_steps = 32,
-          ent_coef = 0.001590090005765676,
-          max_grad_norm = 3.978484484914617,
-          learning_rate = 1.1526642718719798e-05,
-          gae_lambda = 0.998929752360264,       
+          gamma = 0.9980021124707688,
+          n_steps = 64,
+          ent_coef = 3.0498346317498935e-05,
+          max_grad_norm = 1.9296089731489348,
+          learning_rate = 0.8155069571383344,
+          gae_lambda = 0.9976709215345115,       
           verbose=0,
           
           )
