@@ -15,14 +15,16 @@ from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.callbacks import BaseCallback
 
 
-
-
-
 TOTAL_TIMESTEPS = 5e5
-env_name='Block-v1'
+ENV_ID='Block-v1'
+TRAIN_MODE='BOTH'  # Choose from OPTUNA, DEFAULT, or BOTH
+EVALUATE = True
 
-bag_dir = env_name + '_bag/'
+
+bag_dir = ENV_ID + '_bag/'
 os.makedirs(bag_dir, exist_ok=True)
+scores = []
+results = []
 
 def train_model(optuna, env, bag_dir):
   
@@ -65,17 +67,15 @@ def train_model(optuna, env, bag_dir):
   model.learn(total_timesteps=int(TOTAL_TIMESTEPS), callback=callback)
   model.save(os.getcwd() + '/' + model_dir)
   
-  mean_reward, std_reward = eval(model)
+  if EVALUATE: eval(model)
   env.close()
-  return mean_reward, std_reward
+  return
 
 # Evaluate the trained agent
 def eval(model):
   print("Evaluating the model")
-  return evaluate_policy(model, env, n_eval_episodes=10)
-
-def print_rewards(mean_reward, std_reward):
-  print(f"mean_reward={mean_reward:.2f} +/- {std_reward}")
+  mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=100)
+  scores.append("mean_reward = " + str(mean_reward) + " +/- " + str(std_reward)" + \n)
   
 def setup_callback(log_dir, env):
   if os.path.isfile(log_dir + 'monitor.csv'):
@@ -88,13 +88,17 @@ def setup_callback(log_dir, env):
   callback = PlotCallBack(check_freq=1000, log_dir=log_dir)
   return env, callback
 
-env = gym.make(env_name)
-mean_reward1, std_reward1 = train_model(False, env, bag_dir)
-env = gym.make(env_name)
-mean_reward2, std_reward2 = train_model(True, env, bag_dir)
+if TRAIN_MODE != 'OPTUNA':
+  results.append(bag_dir + "default/")
+  env = gym.make(ENV_ID)
+  train_model(False, env, bag_dir)
+if TRAIN_MODE != 'DEFAULT':
+  results.append(bag_dir + "optuna/")  
+  env = gym.make(ENV_ID)
+  train_model(True, env, bag_dir)
 
-print_rewards(mean_reward1, std_reward1)
-print_rewards(mean_reward2, std_reward2)
+for score in scores:
+  print(score)
 
-results_plotter.plot_results([bag_dir + "default/", bag_dir + "optuna/"], TOTAL_TIMESTEPS, results_plotter.X_TIMESTEPS, env_name)
+results_plotter.plot_results(results, TOTAL_TIMESTEPS, results_plotter.X_TIMESTEPS, ENV_ID)
 plt.show()
