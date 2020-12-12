@@ -25,10 +25,10 @@ class PlotCallBack(BaseCallback):
         self.save_path = os.path.join(log_dir, 'best_model')
         self.best_mean_reward = -np.inf
 
-    def _init_callback(self) -> None:
-        # Create folder if needed
-        if self.save_path is not None:
-            os.makedirs(self.save_path, exist_ok=True)
+    # def _init_callback(self) -> None:
+    #     # Create folder if needed
+    #     if self.save_path is not None:
+    #         os.makedirs(self.save_path, exist_ok=True)
 
     def _on_step(self) -> bool:
         if self.n_calls % self.check_freq == 0:
@@ -47,7 +47,7 @@ class PlotCallBack(BaseCallback):
                   self.best_mean_reward = mean_reward
                   # Example for saving best model
                   if self.verbose > 0:
-                    print("Saving new best model to {}".format(self.save_path))
+                    print("Saving new best model to {}.zip".format(self.save_path))
                   self.model.save(self.save_path)
 
         return True

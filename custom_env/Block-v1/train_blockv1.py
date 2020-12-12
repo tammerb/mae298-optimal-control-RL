@@ -14,14 +14,15 @@ from stable_baselines3.common import results_plotter
 from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.callbacks import BaseCallback
 
-
-TOTAL_TIMESTEPS = 5e5
+## User Parameters ##
 ENV_ID='Block-v1'
-TRAIN_MODE='BOTH'  # Choose from OPTUNA, DEFAULT, or BOTH
-EVALUATE = True
+TOTAL_TIMESTEPS = 5e5
+TRAIN_MODE='BOTH'   # Choose from OPTUNA, DEFAULT, or BOTH
+EVALUATE = True     # False will skip the evaluation step
+#####################
 
 
-bag_dir = ENV_ID + '_bag/'
+bag_dir = 'bag/'
 os.makedirs(bag_dir, exist_ok=True)
 scores = []
 results = []
@@ -32,16 +33,15 @@ def train_model(optuna, env, bag_dir):
     print("Training with Optuna-optimized hyperparameters")
     prefix = "optuna/"
     log_dir = bag_dir + prefix
-    model_dir = bag_dir + prefix
     env, callback = setup_callback(log_dir, env)
     model = A2C('MlpPolicy', env, 
-          gamma = 0.993630753740229,
+          gamma = 0.994240050589707,
           n_steps = 32,
           vf_coef = 0.5,
-          ent_coef = 0.16535803309516242,
-          max_grad_norm = 0.9345694121324499,
-          learning_rate = 0.00021258581917570237,
-          gae_lambda = 0.9973243722326772,       
+          ent_coef = 0.001590090005765676,
+          max_grad_norm = 3.978484484914617,
+          learning_rate = 1.1526642718719798e-05,
+          gae_lambda = 0.998929752360264,       
           rms_prop_eps = 1e-5,
           verbose=0
           )
@@ -49,7 +49,6 @@ def train_model(optuna, env, bag_dir):
     print("Training with stable-baselines3 default hyperparameters")
     prefix = "default/"
     log_dir = bag_dir + prefix
-    model_dir = bag_dir + prefix
     env, callback = setup_callback(log_dir, env)
     model = A2C('MlpPolicy', env, 
           gamma = 0.99,
@@ -65,18 +64,18 @@ def train_model(optuna, env, bag_dir):
    
   # Train the agent
   model.learn(total_timesteps=int(TOTAL_TIMESTEPS), callback=callback)
-  model.save(os.getcwd() + '/' + model_dir)
+  best_model = A2C.load(os.getcwd() + "/" + log_dir + "/best_model", verbose=1)
   
-  if EVALUATE: eval(model)
+  if EVALUATE: eval(best_model, prefix)
   env.close()
   return
 
 # Evaluate the trained agent
-def eval(model):
-  print("Evaluating the model")
-  mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=100)
-  scores.append("mean_reward = " + str(mean_reward) + " +/- " + str(std_reward)" + \n)
-  
+def eval(model, prefix):
+  print("Evaluating the best " + prefix + " model")
+  mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10)
+  scores.append(prefix + ": mean_reward = " + str(mean_reward) + " +/- " + str(std_reward))
+
 def setup_callback(log_dir, env):
   if os.path.isfile(log_dir + 'monitor.csv'):
     print("A monitor.csv already exists. Deleting it.")
