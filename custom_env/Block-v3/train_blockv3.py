@@ -15,7 +15,7 @@ from stable_baselines3.common.results_plotter import load_results, ts2xy
 from stable_baselines3.common.callbacks import BaseCallback
 
 ## User Parameters ##
-ENV_ID='Block-v2'
+ENV_ID='Block-v3'
 TOTAL_TIMESTEPS = 2e6
 TRAIN_MODE='BOTH'   # Choose from OPTUNA, DEFAULT, or BOTH
 EVALUATE = True     # False will skip the evaluation step

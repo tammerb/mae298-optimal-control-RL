@@ -16,7 +16,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 
 ## User Parameters ##
 ENV_ID='Block-v1'
-TOTAL_TIMESTEPS = 5e6
+TOTAL_TIMESTEPS = 2e6
 TRAIN_MODE='BOTH'   # Choose from OPTUNA, DEFAULT, or BOTH
 EVALUATE = True     # False will skip the evaluation step
 #####################
