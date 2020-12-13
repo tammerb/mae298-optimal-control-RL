@@ -10,28 +10,16 @@ import custom_ant
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines3 import A2C
 
-#model_untrained = A2C.load(os.getcwd() + "/block_go_to_location_untrained", verbose=1)
-model = A2C.load(os.getcwd() + "/block_three_leg_lift_model_v5", verbose=1)
-
+best_model = A2C.load(os.getcwd() + "/bag/optuna/best_model", verbose=1)
 
 env = gym.make('Block-v5')
 
-#model_untrained.set_env(DummyVecEnv([lambda: env]))
-model.set_env(DummyVecEnv([lambda: env]))
-
-
-#cumulative_reward_untrained = 0
-#obs = env.reset()
-#for i in range(1000):
-#    action, _states = model_untrained.predict(obs)
-#    obs, rewards, dones, info = env.step(action)
-#    cumulative_reward_untrained += rewards
-#    env.render()
+best_model.set_env(DummyVecEnv([lambda: env]))
 
 cumulative_reward = 0
 obs = env.reset()
 for i in range(1000):
-    action, _states = model.predict(obs)
+    action, _states = best_model.predict(obs)
     obs, rewards, dones, info = env.step(action)
     cumulative_reward += rewards
     env.render()

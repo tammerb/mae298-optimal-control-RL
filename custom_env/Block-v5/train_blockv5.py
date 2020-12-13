@@ -35,12 +35,12 @@ def train_model(optuna, env, bag_dir):
     log_dir = bag_dir + prefix
     env, callback = setup_callback(log_dir, env)
     model = A2C('MlpPolicy', env, 
-          gamma = 0.994240050589707,
-          n_steps = 32,
-          ent_coef = 0.001590090005765676,
-          max_grad_norm = 3.978484484914617,
-          learning_rate = 1.1526642718719798e-05,
-          gae_lambda = 0.998929752360264,       
+          gamma = 0.9878046206552303,
+          n_steps = 64,
+          ent_coef = 1.3378918546525299e-06,
+          max_grad_norm = 3.0722611432305533,
+          learning_rate = 1.4451383406749526e-06,
+          gae_lambda = 0.9874936659045374,       
           verbose=0,
           
           )
