@@ -1,5 +1,5 @@
 PLOT_NAME = "MODEL NAME"
-ENV_ID = 'Block-v2'
+ENV_ID = 'Block-v3'
 bag_dir = 'bag/'
 TOTAL_TIMESTEPS = 2e6
 
