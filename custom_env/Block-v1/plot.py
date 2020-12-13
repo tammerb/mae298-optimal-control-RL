@@ -1,4 +1,4 @@
-PLOT_NAME = "Two-legged Block Pusher"
+PLOT_NAME = "Three-legged Block Pusher"
 ENV_ID = 'Block-v1'
 bag_dir = 'bag/'
 TOTAL_TIMESTEPS = 2e6
