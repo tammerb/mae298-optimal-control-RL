@@ -112,3 +112,10 @@ gamma_: 0.9998478809477538
 n_steps: 2
 
 
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7

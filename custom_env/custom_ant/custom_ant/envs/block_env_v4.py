@@ -104,7 +104,7 @@ class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
         contact_cost = self.contact_cost
         
         if block_z_after > 0.55: 
-            forward_reward = 10
+            forward_reward = 10*block_x_velocity
         else:
             forward_reward = 20*Diff_z
             
