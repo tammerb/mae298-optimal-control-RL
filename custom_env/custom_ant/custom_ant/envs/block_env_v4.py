@@ -103,18 +103,19 @@ class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
         
-        if block_z_after > 0.55: 
-            forward_reward = 10*block_x_velocity
+        if block_z_after > 0.35: 
+            forward_reward = 100 + 5 * block_x_velocity
         else:
-            forward_reward = 20*Diff_z
+            forward_reward = 20*Diff_z + 5 * block_x_velocity
             
         healthy_reward = self.healthy_reward
 
        
-        rewards = forward_reward + 0.2*healthy_reward 
+        rewards = forward_reward + healthy_reward 
         
 
-        costs = ctrl_cost  + contact_cost + np.absolute(block_y_velocity)
+        # costs = ctrl_cost  + contact_cost + np.absolute(block_y_velocity)
+        costs = ctrl_cost + np.absolute(block_y_velocity)
         #costs = contact_cost
         # testing constact force 
         # contact_forces_test = self.data.get_sensor('torsoSensor') 
@@ -123,13 +124,13 @@ class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
         #print(' ')
 
         reward = rewards - costs
-        #reward = rewards
+        # reward = rewards
         if xy_position_after[0] < -1:
             done = True
             reward -= 1000
-        elif block_position_after[0] >= 5 and block_z_after > 0.5:
-            done = True
-            reward += 2000
+        #elif block_position_after[0] >= 5 and block_z_after > 0.5:
+        #    done = True
+        #    reward += 2000
         elif self.num_timesteps > 5000:
             done = True
             self.num_timesteps = 0
