@@ -1,38 +1,370 @@
-Number of finished trials: 2
+Number of finished trials: 7
 Best trial:
-  Value: 7212.93505859375
+  Value: 1776.7601318359375
   Params: 
 activation_fn: relu
-ent_coef: 3.267462418071297e-08
-exponent_n_steps: 5
-gae_lambda: 0.14549712152741204
-gamma: 0.0216864440895343
-lr: 0.0008276995254335611
-max_grad_norm: 3.0666948819842808
+ent_coef: 4.889372256660846e-05
+exponent_n_steps: 8
+gae_lambda: 0.011328931405214682
+gamma: 0.00027396076031912695
+lr: 0.003234014510103324
+max_grad_norm: 0.5344462680935536
+net_arch: tiny
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.9886710685947853
+gamma_: 0.9997260392396808
+n_steps: 256
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 4389.7578125
+  Params: 
+activation_fn: relu
+ent_coef: 0.007455691100773858
+exponent_n_steps: 8
+gae_lambda: 0.005121411663495308
+gamma: 0.05183622732946964
+lr: 0.03319875541944301
+max_grad_norm: 0.3620122836660193
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.9948785883365047
+gamma_: 0.9481637726705303
+n_steps: 256
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 8544.3251953125
+  Params: 
+activation_fn: relu
+ent_coef: 0.0005821032823766965
+exponent_n_steps: 6
+gae_lambda: 0.09290844178547344
+gamma: 0.010151255699095581
+lr: 9.668395286946092e-05
+max_grad_norm: 0.5440369049610541
 net_arch: small
 ortho_init: False
   User attrs: 
-gae_lambda_: 0.854502878472588
-gamma_: 0.9783135559104656
-n_steps: 32
+gae_lambda_: 0.9070915582145266
+gamma_: 0.9898487443009044
+n_steps: 64
 
 
-Number of finished trials: 2
+Number of finished trials: 7
 Best trial:
-  Value: 8055.3818359375
+  Value: 9753.4912109375
   Params: 
-activation_fn: relu
-ent_coef: 2.296003252671977e-06
-exponent_n_steps: 7
-gae_lambda: 0.031978774581042625
-gamma: 0.015769362741535512
-lr: 1.445118465983393e-05
-max_grad_norm: 1.231905246831021
-net_arch: small
+activation_fn: tanh
+ent_coef: 0.00686319220978461
+exponent_n_steps: 4
+gae_lambda: 0.004860816983094052
+gamma: 0.0006517669068452382
+lr: 1.7990981915102401e-06
+max_grad_norm: 0.3507535833901882
+net_arch: tiny
 ortho_init: False
   User attrs: 
-gae_lambda_: 0.9680212254189574
-gamma_: 0.9842306372584645
-n_steps: 128
+gae_lambda_: 0.995139183016906
+gamma_: 0.9993482330931548
+n_steps: 16
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 9753.4912109375
+  Params: 
+activation_fn: tanh
+ent_coef: 0.00686319220978461
+exponent_n_steps: 4
+gae_lambda: 0.004860816983094052
+gamma: 0.0006517669068452382
+lr: 1.7990981915102401e-06
+max_grad_norm: 0.3507535833901882
+net_arch: tiny
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.995139183016906
+gamma_: 0.9993482330931548
+n_steps: 16
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 9893.3623046875
+  Params: 
+activation_fn: tanh
+ent_coef: 5.284783759113341e-05
+exponent_n_steps: 1
+gae_lambda: 0.040879405958596265
+gamma: 0.0001521190522461969
+lr: 1.1687851765813055e-06
+max_grad_norm: 1.9454677072404276
+net_arch: small
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.9591205940414037
+gamma_: 0.9998478809477538
+n_steps: 2
+
+
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 7
+Number of finished trials: 2
+Number of finished trials: 2
+Number of finished trials: 10
+Best trial:
+  Value: -2.604482650756836
+  Params: 
+activation_fn: relu
+ent_coef: 1.756569798198763e-08
+exponent_n_steps: 9
+gae_lambda: 0.003714142184167013
+gamma: 0.010306345443077163
+lr: 0.005865679662191248
+max_grad_norm: 1.2566554102160854
+net_arch: tiny
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.996285857815833
+gamma_: 0.9896936545569228
+n_steps: 512
+
+
+Number of finished trials: 10
+Best trial:
+  Value: 63.1406135559082
+  Params: 
+activation_fn: tanh
+ent_coef: 0.24755003970487047
+exponent_n_steps: 8
+gae_lambda: 0.11317098381143872
+gamma: 0.00010444168364658589
+lr: 0.01605550807496155
+max_grad_norm: 0.6220675532208811
+net_arch: tiny
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.8868290161885612
+gamma_: 0.9998955583163535
+n_steps: 256
+
+
+Number of finished trials: 10
+Best trial:
+  Value: 63.1406135559082
+  Params: 
+activation_fn: tanh
+ent_coef: 0.24755003970487047
+exponent_n_steps: 8
+gae_lambda: 0.11317098381143872
+gamma: 0.00010444168364658589
+lr: 0.01605550807496155
+max_grad_norm: 0.6220675532208811
+net_arch: tiny
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.8868290161885612
+gamma_: 0.9998955583163535
+n_steps: 256
+
+
+Number of finished trials: 10
+Best trial:
+  Value: 63.1406135559082
+  Params: 
+activation_fn: tanh
+ent_coef: 0.24755003970487047
+exponent_n_steps: 8
+gae_lambda: 0.11317098381143872
+gamma: 0.00010444168364658589
+lr: 0.01605550807496155
+max_grad_norm: 0.6220675532208811
+net_arch: tiny
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.8868290161885612
+gamma_: 0.9998955583163535
+n_steps: 256
+
+
+Number of finished trials: 10
+Best trial:
+  Value: 63.1406135559082
+  Params: 
+activation_fn: tanh
+ent_coef: 0.24755003970487047
+exponent_n_steps: 8
+gae_lambda: 0.11317098381143872
+gamma: 0.00010444168364658589
+lr: 0.01605550807496155
+max_grad_norm: 0.6220675532208811
+net_arch: tiny
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.8868290161885612
+gamma_: 0.9998955583163535
+n_steps: 256
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 8717.65625
+  Params: 
+activation_fn: tanh
+ent_coef: 5.2583612995392454e-08
+exponent_n_steps: 8
+gae_lambda: 0.0018341643328283004
+gamma: 0.018371213892580483
+lr: 0.00011092495810998296
+max_grad_norm: 1.275006989131678
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.9981658356671717
+gamma_: 0.9816287861074195
+n_steps: 256
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 8717.65625
+  Params: 
+activation_fn: tanh
+ent_coef: 5.2583612995392454e-08
+exponent_n_steps: 8
+gae_lambda: 0.0018341643328283004
+gamma: 0.018371213892580483
+lr: 0.00011092495810998296
+max_grad_norm: 1.275006989131678
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.9981658356671717
+gamma_: 0.9816287861074195
+n_steps: 256
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 8717.65625
+  Params: 
+activation_fn: tanh
+ent_coef: 5.2583612995392454e-08
+exponent_n_steps: 8
+gae_lambda: 0.0018341643328283004
+gamma: 0.018371213892580483
+lr: 0.00011092495810998296
+max_grad_norm: 1.275006989131678
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.9981658356671717
+gamma_: 0.9816287861074195
+n_steps: 256
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 4412.98486328125
+  Params: 
+activation_fn: tanh
+ent_coef: 2.202106000575563e-05
+exponent_n_steps: 6
+gae_lambda: 0.002380532161448634
+gamma: 0.023170235681592283
+lr: 0.001288248775607721
+max_grad_norm: 1.1667273496254498
+net_arch: tiny
+ortho_init: False
+  User attrs: 
+gae_lambda_: 0.9976194678385514
+gamma_: 0.9768297643184077
+n_steps: 64
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 8950.068359375
+  Params: 
+activation_fn: relu
+ent_coef: 4.907183229742399e-08
+exponent_n_steps: 9
+gae_lambda: 0.012140223370841856
+gamma: 0.05849339283835392
+lr: 0.0001452471210083906
+max_grad_norm: 1.0538321560421715
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.9878597766291581
+gamma_: 0.941506607161646
+n_steps: 512
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 8950.068359375
+  Params: 
+activation_fn: relu
+ent_coef: 4.907183229742399e-08
+exponent_n_steps: 9
+gae_lambda: 0.012140223370841856
+gamma: 0.05849339283835392
+lr: 0.0001452471210083906
+max_grad_norm: 1.0538321560421715
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.9878597766291581
+gamma_: 0.941506607161646
+n_steps: 512
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 10866.943359375
+  Params: 
+activation_fn: tanh
+ent_coef: 3.565697768206902e-05
+exponent_n_steps: 8
+gae_lambda: 0.0027217000698823222
+gamma: 0.024694315324796514
+lr: 0.0001095893332301144
+max_grad_norm: 1.6202310507676243
+net_arch: tiny
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.9972782999301176
+gamma_: 0.9753056846752035
+n_steps: 256
+
+
+Number of finished trials: 7
+Best trial:
+  Value: 10945.8671875
+  Params: 
+activation_fn: tanh
+ent_coef: 4.948364317173779e-06
+exponent_n_steps: 1
+gae_lambda: 0.0074035194964349954
+gamma: 0.00012618084127970246
+lr: 3.3706472170435117e-06
+max_grad_norm: 2.6988398014062644
+net_arch: small
+ortho_init: True
+  User attrs: 
+gae_lambda_: 0.992596480503565
+gamma_: 0.9998738191587203
+n_steps: 2
 
 

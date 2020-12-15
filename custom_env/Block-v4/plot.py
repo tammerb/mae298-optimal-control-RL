@@ -1,7 +1,7 @@
-PLOT_NAME = "Push Block to Goal Location"
-ENV_ID = 'Block-v2'
+PLOT_NAME = "MODEL NAME"
+ENV_ID = 'Block-v4'
 bag_dir = 'bag/'
-TOTAL_TIMESTEPS = 5e5
+TOTAL_TIMESTEPS = 2e6
 
 legend_names = []
 legend_names.append('Default')

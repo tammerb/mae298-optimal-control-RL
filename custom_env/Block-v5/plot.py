@@ -1,5 +1,5 @@
-PLOT_NAME = "Three-legged Block Pusher"
-ENV_ID = 'Block-v1'
+PLOT_NAME = "MODEL NAME"
+ENV_ID = 'Block-v4'
 bag_dir = 'bag/'
 TOTAL_TIMESTEPS = 2e6
 

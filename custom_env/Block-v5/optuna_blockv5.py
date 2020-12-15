@@ -25,11 +25,11 @@ N_TRIALS = 1000  ### originally 100
 N_JOBS = 1 ### Originally 2
 N_STARTUP_TRIALS = 5 ### Originally 5
 N_EVALUATIONS = 100 ### Originally 2
-N_TIMESTEPS = int(1e6) ### originally 2e4
+N_TIMESTEPS = int(2e6) ### originally 2e4
 EVAL_FREQ = int(N_TIMESTEPS / N_EVALUATIONS)
 N_EVAL_EPISODES = 10 ### Originally 3
 
-ENV_ID = "Block-v4"
+ENV_ID = "Block-v5"
 
 DEFAULT_HYPERPARAMS = {
     "policy": "MlpPolicy",

@@ -10,7 +10,7 @@ DEFAULT_CAMERA_CONFIG = {
 }
 
 
-class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
+class BlockV5(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(self,
                  xml_file= os.getcwd() + '/..' + '/custom_ant/models/block_three_legs_v1.xml',
                  ctrl_cost_weight=0.5,
@@ -94,28 +94,27 @@ class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
         x_velocity, y_velocity = xy_velocity
         block_velocity = (block_position_after - block_position_before) / self.dt
         block_x_velocity, block_y_velocity = block_velocity
-        # difference in Z
-        Diff_z = block_z_after-block_z_before 
+        
         
         mjp.functions.mj_rnePostConstraint(self.sim.model, self.data) #### calc contacts        
 
-
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
+        Diff_z = block_z_after-block_z_before 
         
-        if block_z_after > 0.35: 
-            forward_reward = 100 + 5 * block_x_velocity
+        if block_z_after > 0.5:
+            forward_reward = 10 + 5 * block_x_velocity # + 0.1 * xy_position_after[0]
         else:
-            forward_reward = 20*Diff_z + 5 * block_x_velocity
-            
+            forward_reward = 20*Diff_z
         healthy_reward = self.healthy_reward
 
-       
-        rewards = forward_reward + healthy_reward 
-        
+        #print(forward_reward)
+        rewards = forward_reward + healthy_reward
+        # rewards = (100*forward_reward + healthy_reward)*0.01
 
-        # costs = ctrl_cost  + contact_cost + np.absolute(block_y_velocity)
-        costs = ctrl_cost + np.absolute(block_y_velocity)
+
+        #print(rewards)
+        costs = ctrl_cost  + contact_cost + np.absolute(block_y_velocity)
         #costs = contact_cost
         # testing constact force 
         # contact_forces_test = self.data.get_sensor('torsoSensor') 
@@ -124,13 +123,15 @@ class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
         #print(' ')
 
         reward = rewards - costs
-        # reward = rewards
+        #reward = rewards
         if xy_position_after[0] < -1:
             done = True
             reward -= 1000
-        #elif block_position_after[0] >= 5 and block_z_after > 0.5:
-        #    done = True
-        #    reward += 2000
+            self.num_timesteps = 0
+        elif block_position_after[0] >= 5 and block_z_after > 0.5:
+            done = True
+            reward += 2000
+            self.num_timesteps = 0
         elif self.num_timesteps > 5000:
             done = True
             self.num_timesteps = 0
