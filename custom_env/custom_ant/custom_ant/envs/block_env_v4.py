@@ -103,10 +103,10 @@ class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
         ctrl_cost = self.control_cost(action)
         contact_cost = self.contact_cost
         
-        if block_z_after > 0.35: 
-            forward_reward = 100 + 5 * block_x_velocity
+        if block_z_after > 0.3: 
+            forward_reward = block_z_after + block_x_velocity
         else:
-            forward_reward = 20*Diff_z + 5 * block_x_velocity
+            forward_reward = 0
             
         healthy_reward = self.healthy_reward
 
@@ -125,7 +125,7 @@ class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
 
         reward = rewards - costs
         # reward = rewards
-        if xy_position_after[0] < -1:
+        if xy_position_after[0] < -0.1:
             done = True
             reward -= 1000
         #elif block_position_after[0] >= 5 and block_z_after > 0.5:
@@ -162,7 +162,8 @@ class BlockV4(mujoco_env.MujocoEnv, utils.EzPickle):
         if self._exclude_current_positions_from_observation:
             position = position[2:]
 
-        observations = np.concatenate((position, velocity, contact_force))
+        # observations = np.concatenate((position, velocity, contact_force))
+        observations = np.concatenate((position, velocity))
 
         return observations
 

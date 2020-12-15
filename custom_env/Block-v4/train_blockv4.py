@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 from stable_baselines3 import A2C
 from stable_baselines3.common.evaluation import evaluate_policy
+from stable_baselines3.common.env_util import make_vec_env
 
 from stable_baselines.bench import Monitor
 from stable_baselines3.common import results_plotter
@@ -16,7 +17,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 
 ## User Parameters ##
 ENV_ID='Block-v4'
-TOTAL_TIMESTEPS = 5.2e5
+TOTAL_TIMESTEPS = 5e5
 TRAIN_MODE='BOTH'   # Choose from OPTUNA, DEFAULT, or BOTH
 EVALUATE = True     # False will skip the evaluation step
 #####################
@@ -35,12 +36,12 @@ def train_model(optuna, env, bag_dir):
     log_dir = bag_dir + prefix
     env, callback = setup_callback(log_dir, env)
     model = A2C('MlpPolicy', env, 
-          gamma = 0.99987381915872035,
-          n_steps = 2,
-          ent_coef = 4.948364317173779e-06,
-          max_grad_norm = 2.6988398014062644,
-          learning_rate = 3.3706472170435117e-06,
-          gae_lambda = 0.992596480503565,       
+          gamma = 0.9687243418932879,
+          n_steps = 64,
+          ent_coef = 4.1896797133927205e-05,
+          max_grad_norm = 2.8056384038685387,
+          learning_rate = 6.443147834150044e-05,
+          gae_lambda = 0.9987703755277957,       
           verbose=0,
           
           )
@@ -60,7 +61,7 @@ def train_model(optuna, env, bag_dir):
     )
    
   # Train the agent
-  model.learn(total_timesteps=int(TOTAL_TIMESTEPS), callback=callback)
+  model.learn(total_timesteps=int(TOTAL_TIMESTEPS), callback=callback, n_envs=4)
   best_model = A2C.load(os.getcwd() + "/" + log_dir + "/best_model", verbose=1)
   
   if EVALUATE: eval(best_model, prefix)
