@@ -25,7 +25,7 @@ N_TRIALS = 1000  ### originally 100
 N_JOBS = 1 ### Originally 2
 N_STARTUP_TRIALS = 5 ### Originally 5
 N_EVALUATIONS = 100 ### Originally 2
-N_TIMESTEPS = int(2e6) ### originally 2e4
+N_TIMESTEPS = int(5e5) ### originally 2e4
 EVAL_FREQ = int(N_TIMESTEPS / N_EVALUATIONS)
 N_EVAL_EPISODES = 10 ### Originally 3
 
@@ -158,14 +158,14 @@ if __name__ == "__main__":
 
     # Parallelize for distributed optimization
     study = optuna.create_study(sampler=sampler, pruner=pruner, direction="maximize", study_name=ENV_ID + '_study',
-    storage='sqlite:///study.db',
+    storage='sqlite:///study2.db',
     load_if_exists=True)
     try:
         study.optimize(objective, n_trials=N_TRIALS, n_jobs=N_JOBS, timeout=600)
     except KeyboardInterrupt:
         pass
 
-    best_trial_file = open(ENV_ID + "_best.txt", "a")
+    best_trial_file = open(ENV_ID + "_best2.txt", "a")
     print("Number of finished trials: ", len(study.trials))
     best_trial_file.write("Number of finished trials: " + str(len(study.trials)) + "\n")
 

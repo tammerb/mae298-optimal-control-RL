@@ -22,7 +22,7 @@ EVALUATE = True     # False will skip the evaluation step
 #####################
 
 
-bag_dir = 'bag/'
+bag_dir = 'bag2/'
 os.makedirs(bag_dir, exist_ok=True)
 scores = []
 results = []
@@ -35,12 +35,12 @@ def train_model(optuna, env, bag_dir):
     log_dir = bag_dir + prefix
     env, callback = setup_callback(log_dir, env)
     model = A2C('MlpPolicy', env, 
-          gamma = 0.9878046206552303,
-          n_steps = 64,
-          ent_coef = 1.3378918546525299e-06,
-          max_grad_norm = 3.0722611432305533,
-          learning_rate = 1.4451383406749526e-06,
-          gae_lambda = 0.9874936659045374,       
+          gamma = 0.9636120594258394,
+          n_steps = 4,
+          ent_coef = 1.0985626158991164e-07,
+          max_grad_norm = 1.7172090382683702,
+          learning_rate = 3.74989931024764e-05,
+          gae_lambda = 0.995722285271587,       
           verbose=0,
           
           )

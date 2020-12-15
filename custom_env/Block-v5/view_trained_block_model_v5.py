@@ -10,7 +10,7 @@ import custom_ant
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines3 import A2C
 
-best_model = A2C.load(os.getcwd() + "/bag/optuna/best_model", verbose=1)
+best_model = A2C.load(os.getcwd() + "/bag2/optuna/best_model", verbose=1)
 
 env = gym.make('Block-v5')
 

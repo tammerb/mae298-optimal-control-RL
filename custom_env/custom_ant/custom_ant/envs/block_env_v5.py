@@ -103,9 +103,9 @@ class BlockV5(mujoco_env.MujocoEnv, utils.EzPickle):
         Diff_z = block_z_after-block_z_before 
         
         if block_z_after > 0.5:
-            forward_reward = 10 + 5 * block_x_velocity # + 0.1 * xy_position_after[0]
+            forward_reward = 1 + 5 * block_x_velocity # + 0.1 * xy_position_after[0]
         else:
-            forward_reward = 20*Diff_z
+            forward_reward = 2*Diff_z
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)
@@ -114,7 +114,7 @@ class BlockV5(mujoco_env.MujocoEnv, utils.EzPickle):
 
 
         #print(rewards)
-        costs = ctrl_cost  + contact_cost + np.absolute(block_y_velocity)
+        costs = ctrl_cost + np.absolute(block_y_velocity)
         #costs = contact_cost
         # testing constact force 
         # contact_forces_test = self.data.get_sensor('torsoSensor') 
@@ -158,12 +158,12 @@ class BlockV5(mujoco_env.MujocoEnv, utils.EzPickle):
     def _get_obs(self):
         position = self.sim.data.qpos.flat.copy()
         velocity = self.sim.data.qvel.flat.copy()
-        contact_force = self.contact_forces.flat.copy()
+        #contact_force = self.contact_forces.flat.copy()
 
         if self._exclude_current_positions_from_observation:
             position = position[2:]
 
-        observations = np.concatenate((position, velocity, contact_force))
+        observations = np.concatenate((position, velocity))
 
         return observations
 

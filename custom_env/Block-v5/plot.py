@@ -1,6 +1,6 @@
-PLOT_NAME = "MODEL NAME"
-ENV_ID = 'Block-v4'
-bag_dir = 'bag/'
+PLOT_NAME = "Lift block then walk in x direction"
+ENV_ID = 'Block-v5'
+bag_dir = 'bag2/'
 TOTAL_TIMESTEPS = 2e6
 
 legend_names = []
