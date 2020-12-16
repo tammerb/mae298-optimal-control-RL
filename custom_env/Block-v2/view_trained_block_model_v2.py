@@ -5,57 +5,31 @@
 
 import os
 import gym
-env_dict = gym.envs.registration.registry.env_specs.copy()
-for env in env_dict:
-    if 'CustomAnt-v0' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'CustomAnt-v2' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'CustomAnt-v3' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'CustomAnt-v4' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'Block-v0' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
-    elif 'Block-v0' in env:
-        print("Remove {} from registry".format(env))
-        del gym.envs.registration.registry.env_specs[env]
 import custom_ant
 
-from stable_baselines import PPO2
-from stable_baselines import A2C
 from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines3 import A2C
 
-#model_untrained = A2C.load(os.getcwd() + "/block_go_to_location_untrained", verbose=1)
-model = A2C.load(os.getcwd() + "/block_go_to_location_trained", verbose=1)
-
+best_model = A2C.load(os.getcwd() + "/bag/optuna/best_model", verbose=1)
 
 env = gym.make('Block-v2')
 
-#model_untrained.set_env(DummyVecEnv([lambda: env]))
-model.set_env(DummyVecEnv([lambda: env]))
-
-
-#cumulative_reward_untrained = 0
-#obs = env.reset()
-#for i in range(1000):
-#    action, _states = model_untrained.predict(obs)
-#    obs, rewards, dones, info = env.step(action)
-#    cumulative_reward_untrained += rewards
-#    env.render()
+best_model.set_env(DummyVecEnv([lambda: env]))
 
 cumulative_reward = 0
 obs = env.reset()
-for i in range(1000):
-    action, _states = model.predict(obs)
+for i in range(2000):
+    
+    action, _states = best_model.predict(obs)
     obs, rewards, dones, info = env.step(action)
     cumulative_reward += rewards
     env.render()
+    
+    if dones:
+    	obs = env.reset()
+    	print('Rewards',rewards)
+    	rewards = 0
+    	
 
 #print("Untrained total reward:", cumulative_reward_untrained)
 print("Trained Total reward:", cumulative_reward)

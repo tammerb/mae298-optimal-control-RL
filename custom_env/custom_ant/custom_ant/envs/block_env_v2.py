@@ -13,7 +13,7 @@ DEFAULT_CAMERA_CONFIG = {
 class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(self,
                  xml_file= os.getcwd() + '/..' + '/custom_ant/models/block_two_legs_v0.xml',
-                 ctrl_cost_weight=0.5,
+                 ctrl_cost_weight=1,
                  contact_cost_weight=5e-4,
                  healthy_reward=1.0,
                  terminate_when_unhealthy=True,
@@ -108,13 +108,14 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
         theta= np.arctan2(y_comp,x_comp)* 180 / np.pi
         
         # Desired goal
-        x_desired = 5
+        x_desired = 7
         y_desired = 7
         theta_desired = np.arctan2(y_desired,x_desired)* 180 / np.pi
         
         # Distance Calculations
         x_before, y_before = block_position_before
         x_after, y_after = block_position_after
+        
         
         D_after = ((y_desired - y_after)**2 + (x_desired - x_after)**2)**0.5
         D_before = ((y_desired - y_before)**2 + (x_desired - x_before)**2)**0.5
@@ -128,7 +129,9 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
         # 100*D_diff -> If D_after is greater than D_before, meaning it is getting further away from the goal, D_diff is negative ( negative reward )
         #            -> Likewise, if the ant model is approaching the goal, reward is positive 
         
-        forward_reward = 10*D_diff + 1/(D_after)**2 
+        
+        forward_reward =  30*D_diff 
+       
         healthy_reward = self.healthy_reward
 
         #print(forward_reward)
@@ -137,25 +140,33 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
 
 
         #print(rewards)
-        costs = ctrl_cost  + contact_cost + np.absolute(block_y_velocity)
+        costs = ctrl_cost   
+        
         #costs = contact_cost
         # testing constact force 
         # contact_forces_test = self.data.get_sensor('torsoSensor') 
         #contact_forces_test = self.data.sensordata 
         #print(contact_forces_test)
         #print(' ')
+        
 
         reward = rewards - costs
         #reward = rewards
-        if D_after <= 1:
+        if D_after < 1.5:
+            reward = reward + 200
             done = True
-            reward += 2000
+            print("*****GOAL ACHIEVED")
+            print("reward", reward)
         elif self.num_timesteps > 5000:
             done = True
             self.num_timesteps = 0
         else:
             done = self.done
         observation = self._get_obs()
+        
+        
+        if reward > 400:
+            print('****Reward', reward)
         info = {
             'reward_forward': forward_reward,
             'reward_ctrl': -ctrl_cost,
@@ -175,13 +186,13 @@ class BlockV2(mujoco_env.MujocoEnv, utils.EzPickle):
 
     def _get_obs(self):
         position = self.sim.data.qpos.flat.copy()
-        velocity = self.sim.data.qvel.flat.copy()
-        contact_force = self.contact_forces.flat.copy()
+        #velocity = self.sim.data.qvel.flat.copy()
+        #contact_force = self.contact_forces.flat.copy()
 
         if self._exclude_current_positions_from_observation:
             position = position[2:]
 
-        observations = np.concatenate((position, velocity, contact_force))
+        observations =  position #np.concatenate((position))
 
         return observations
 
